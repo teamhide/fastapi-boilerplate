@@ -1,0 +1,29 @@
+from typing import List
+
+from fastapi import APIRouter
+
+from app.schemas import (
+    GetUserListResponseSchema,
+    CreateUserRequestSchema,
+    CreateUserResponseSchema,
+)
+from core.exception import CustomException
+from app.usecases import CreateUserUsecase, GetUserListUsecase
+
+user_router = APIRouter()
+
+
+@user_router.get('/', response_model=List[GetUserListResponseSchema])
+def get_user_list(limit: int = 10, prev: int = None):
+    return await GetUserListUsecase().execute(limit=limit, prev=prev)
+
+
+@user_router.post(
+    '/',
+    response_model=CreateUserResponseSchema,
+    responses={
+        '400': {'model': CustomException},
+    },
+)
+def create_user(request: CreateUserRequestSchema):
+    return await CreateUserUsecase().execute(**request.dict())

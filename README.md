@@ -1,0 +1,4 @@
+# FastAPI Boilerplate
+
+- FastAPI
+- SQLAlchemy
