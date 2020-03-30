@@ -11,6 +11,7 @@ alembic = "*"
 sqlalchemy = "*"
 uvicorn = "*"
 pyjwt = "*"
+pymysql = "*"
 
 [requires]
 python_version = "3.8"

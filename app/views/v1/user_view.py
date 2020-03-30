@@ -14,7 +14,7 @@ user_router = APIRouter()
 
 
 @user_router.get('/', response_model=List[GetUserListResponseSchema])
-def get_user_list(limit: int = 10, prev: int = None):
+async def get_user_list(limit: int = 10, prev: int = None):
     return await GetUserListUsecase().execute(limit=limit, prev=prev)
 
 
@@ -25,5 +25,5 @@ def get_user_list(limit: int = 10, prev: int = None):
         '400': {'model': CustomException},
     },
 )
-def create_user(request: CreateUserRequestSchema):
+async def create_user(request: CreateUserRequestSchema):
     return await CreateUserUsecase().execute(**request.dict())
