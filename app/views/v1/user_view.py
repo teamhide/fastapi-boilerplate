@@ -3,6 +3,7 @@ from typing import List
 from fastapi import APIRouter
 
 from app.schemas import (
+    ExceptionResponseSchema,
     GetUserListResponseSchema,
     CreateUserRequestSchema,
     CreateUserResponseSchema,
@@ -22,7 +23,7 @@ async def get_user_list(limit: int = 10, prev: int = None):
     '/',
     response_model=CreateUserResponseSchema,
     responses={
-        '400': {'model': CustomException},
+        '400': {'model': ExceptionResponseSchema},
     },
 )
 async def create_user(request: CreateUserRequestSchema):
