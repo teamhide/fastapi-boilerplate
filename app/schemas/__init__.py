@@ -1,5 +1,5 @@
 from .user_schema import *
 
 
-class ExceptionResponseSchema(BaseException):
+class ExceptionResponseSchema(BaseModel):
     error: str

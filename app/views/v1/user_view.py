@@ -8,7 +8,6 @@ from app.schemas import (
     CreateUserRequestSchema,
     CreateUserResponseSchema,
 )
-from core.exception import CustomException
 from app.usecases import CreateUserUsecase, GetUserListUsecase
 
 user_router = APIRouter()
