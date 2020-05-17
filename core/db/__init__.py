@@ -4,7 +4,7 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 
 from core.config import get_config
 
-engine = create_engine(get_config().DB_URL)
+engine = create_engine(get_config().DB_URL, pool_recycle=3600)
 session = scoped_session(
     sessionmaker(
         autocommit=False,
