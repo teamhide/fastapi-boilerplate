@@ -1,43 +1,40 @@
 import os
-from dataclasses import dataclass
+
+from pydantic import BaseSettings
 
 
-@dataclass(frozen=True)
-class Config:
-    ENV: str = os.getenv('ENV', 'development')
-    DEBUG: bool = os.getenv('DEBUG', True)
-    APP_HOST: str = os.getenv('APP_HOST', '0.0.0.0')
-    APP_PORT: str = os.getenv('APP_PORT', 8000)
-    DB_USER: str = os.getenv('DB_USER', 'gymlog')
-    DB_PASS: str = os.getenv('DB_PASS', 'gymlog')
-    DB_HOST: str = os.getenv('DB_HOST', 'localhost')
-    DB_NAME: str = os.getenv('DB_NAME', 'gymlog')
+class Config(BaseSettings):
+    ENV: str = 'development'
+    DEBUG: bool = True
+    APP_HOST: str = '0.0.0.0'
+    APP_PORT: str = 8000
+    DB_USER: str = 'fastapi'
+    DB_PASS: str = 'fastapi'
+    DB_HOST: str = 'localhost'
+    DB_NAME: str = 'fastapi'
     DB_URL: str = f'mysql+pymysql://{DB_USER}:{DB_PASS}@{DB_HOST}:3306/{DB_NAME}'
-    JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY', 'gymlog')
-    JWT_ALGORITHM = 'HS256'
-    SENTRY_SDN: str = os.getenv('SENTRY_DSN')
+    JWT_SECRET_KEY: str = 'fastapi'
+    JWT_ALGORITHM: str = 'HS256'
+    SENTRY_SDN: str = None
 
 
-@dataclass(frozen=True)
 class DevelopmentConfig(Config):
-    DEBUG = True
+    DEBUG: str = True
 
 
-@dataclass(frozen=True)
 class TestingConfig(Config):
-    DEBUG = True
+    DEBUG: str = True
 
 
-@dataclass(frozen=True)
 class ProductionConfig(Config):
-    DEBUG = False
+    DEBUG: str = False
 
 
 def get_config():
     env = os.getenv('ENV', 'development')
     config_type = {
-        'development': DevelopmentConfig,
-        'testing': TestingConfig,
-        'production': ProductionConfig
+        'development': DevelopmentConfig(),
+        'testing': TestingConfig(),
+        'production': ProductionConfig(),
     }
     return config_type[env]
