@@ -3,7 +3,7 @@ from typing import Union, NoReturn
 from jwt.exceptions import DecodeError, ExpiredSignatureError
 
 from core.exception import CustomException
-from core.utils import TokenHelper
+from core.utils.token_helper import TokenHelper
 
 
 def extract_payload_from_token(token: str) -> Union[dict, NoReturn]:
