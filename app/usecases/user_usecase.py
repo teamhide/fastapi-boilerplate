@@ -39,7 +39,10 @@ class CreateUserUsecase(UserUsecase):
         if session.query(User).filter(
                 or_(User.email == email, User.nickname == nickname),
         ).first():
-            raise CustomException(error='duplicated email', code=400)
+            raise CustomException(
+                error='duplicated email or nickname',
+                code=400,
+            )
 
         user = User(email=email, password=password1, nickname=nickname)
         session.add(user)

@@ -1,14 +1,13 @@
 from pydantic import BaseModel
 
 
-class UserSchema(BaseModel):
+class GetUserListResponseSchema(BaseModel):
     id: int
     email: str
     nickname: str
 
-
-class GetUserListResponseSchema(UserSchema):
-    pass
+    class Config:
+        orm_mode = True
 
 
 class CreateUserRequestSchema(BaseModel):
@@ -18,5 +17,10 @@ class CreateUserRequestSchema(BaseModel):
     nickname: str
 
 
-class CreateUserResponseSchema(UserSchema):
-    pass
+class CreateUserResponseSchema(BaseModel):
+    id: int
+    email: str
+    nickname: str
+
+    class Config:
+        orm_mode = True

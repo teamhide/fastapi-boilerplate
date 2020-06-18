@@ -21,7 +21,7 @@ def init_cors(app: FastAPI) -> None:
 
 def init_routers(app: FastAPI) -> None:
     app.include_router(home_router)
-    app.include_router(user_router, prefix='/api/v1', tags=['User'])
+    app.include_router(user_router, prefix='/api/v1/users', tags=['User'])
 
 
 def init_listeners(app: FastAPI) -> None:
