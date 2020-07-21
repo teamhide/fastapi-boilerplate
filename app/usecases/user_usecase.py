@@ -4,7 +4,10 @@ from sqlalchemy import or_
 
 from app.models import User
 from core.db import session
-from core.exception import CustomException
+from core.exceptions import (
+    PasswordDoesNotMatchException,
+    DuplicateEmailOrNicknameException,
+)
 
 
 class UserUsecase:
@@ -34,15 +37,12 @@ class CreateUserUsecase(UserUsecase):
         nickname: str,
     ) -> Union[User, NoReturn]:
         if password1 != password2:
-            raise CustomException(error='password does not match', code=400)
+            raise PasswordDoesNotMatchException
 
         if session.query(User).filter(
                 or_(User.email == email, User.nickname == nickname),
         ).first():
-            raise CustomException(
-                error='duplicated email or nickname',
-                code=400,
-            )
+            raise DuplicateEmailOrNicknameException
 
         user = User(email=email, password=password1, nickname=nickname)
         session.add(user)

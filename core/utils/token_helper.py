@@ -4,7 +4,7 @@ from typing import Union, NoReturn
 import jwt
 
 from core.config import get_config
-from core.exception import CustomException
+from core.exceptions import DecodeTokenException, ExpiredTokenException
 
 
 class TokenHelper:
@@ -30,9 +30,9 @@ class TokenHelper:
                 self.config.JWT_ALGORITHM,
             )
         except jwt.exceptions.DecodeError:
-            raise CustomException(error='invalid token', code=401)
+            raise DecodeTokenException
         except jwt.exceptions.ExpiredSignatureError:
-            raise CustomException(error='token expired', code=401)
+            raise ExpiredTokenException
 
     def decode_expired_token(self, token: str) -> Union[dict, NoReturn]:
         try:
@@ -43,4 +43,4 @@ class TokenHelper:
                 options={'verify_exp': False}
             )
         except jwt.exceptions.DecodeError:
-            raise CustomException(error='invalid token', code=401)
+            raise DecodeTokenException

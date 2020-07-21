@@ -6,7 +6,7 @@ from app.views import home_router
 from app.views.v1 import user_router
 from core.config import get_config
 from core.db import session
-from core.exception import CustomException
+from core.exceptions import CustomException
 
 
 def init_cors(app: FastAPI) -> None:
@@ -30,7 +30,7 @@ def init_listeners(app: FastAPI) -> None:
     async def custom_exception_handler(request: Request, exc: CustomException):
         return JSONResponse(
             status_code=exc.code,
-            content=exc.kwargs,
+            content={'error_code': exc.error_code, 'message': exc.message},
         )
 
     # Middleware for SQLAlchemy session
