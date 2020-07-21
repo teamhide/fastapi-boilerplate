@@ -15,30 +15,23 @@ user_router = APIRouter()
 
 
 @user_router.get(
-    '',
+    "",
     response_model=List[GetUserListResponseSchema],
-    response_model_exclude={'id'},
-    responses={
-        '400': {'model': ExceptionResponseSchema},
-    },
+    response_model_exclude={"id"},
+    responses={"400": {"model": ExceptionResponseSchema},},
 )
 async def get_user_list(
-    limit: int = 10,
-    prev: int = None,
-    payload: dict = Depends(extract_token),
+    limit: int = 10, prev: int = None, payload: dict = Depends(extract_token),
 ):
     return await GetUserListUsecase().execute(limit=limit, prev=prev)
 
 
 @user_router.post(
-    '',
+    "",
     response_model=CreateUserResponseSchema,
-    responses={
-        '400': {'model': ExceptionResponseSchema},
-    },
+    responses={"400": {"model": ExceptionResponseSchema},},
 )
 async def create_user(
-    request: CreateUserRequestSchema,
-    payload: dict = Depends(extract_token),
+    request: CreateUserRequestSchema, payload: dict = Depends(extract_token),
 ):
     return await CreateUserUsecase().execute(**request.dict())

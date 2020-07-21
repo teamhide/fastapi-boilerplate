@@ -15,19 +15,17 @@ class TokenHelper:
         token = jwt.encode(
             payload={
                 **payload,
-                'exp': datetime.utcnow() + timedelta(seconds=expire_period),
+                "exp": datetime.utcnow() + timedelta(seconds=expire_period),
             },
             key=self.config.JWT_SECRET_KEY,
             algorithm=self.config.JWT_ALGORITHM,
-        ).decode('utf8')
+        ).decode("utf8")
         return token
 
     def decode(self, token: str) -> Union[dict, NoReturn]:
         try:
             return jwt.decode(
-                token,
-                self.config.JWT_SECRET_KEY,
-                self.config.JWT_ALGORITHM,
+                token, self.config.JWT_SECRET_KEY, self.config.JWT_ALGORITHM,
             )
         except jwt.exceptions.DecodeError:
             raise DecodeTokenException
@@ -40,7 +38,7 @@ class TokenHelper:
                 token,
                 self.config.JWT_SECRET_KEY,
                 self.config.JWT_ALGORITHM,
-                options={'verify_exp': False}
+                options={"verify_exp": False},
             )
         except jwt.exceptions.DecodeError:
             raise DecodeTokenException

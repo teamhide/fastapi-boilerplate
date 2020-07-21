@@ -15,9 +15,7 @@ def extract_token(
     config = get_config()
     try:
         return jwt.decode(
-            authorization.credentials,
-            config.JWT_SECRET_KEY,
-            config.JWT_ALGORITHM,
+            authorization.credentials, config.JWT_SECRET_KEY, config.JWT_ALGORITHM,
         )
     except DecodeError:
         raise DecodeTokenException

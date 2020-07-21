@@ -30,18 +30,16 @@ class GetUserListUsecase(UserUsecase):
 
 class CreateUserUsecase(UserUsecase):
     async def execute(
-        self,
-        email: str,
-        password1: str,
-        password2: str,
-        nickname: str,
+        self, email: str, password1: str, password2: str, nickname: str,
     ) -> Union[User, NoReturn]:
         if password1 != password2:
             raise PasswordDoesNotMatchException
 
-        if session.query(User).filter(
-                or_(User.email == email, User.nickname == nickname),
-        ).first():
+        if (
+            session.query(User)
+            .filter(or_(User.email == email, User.nickname == nickname),)
+            .first()
+        ):
             raise DuplicateEmailOrNicknameException
 
         user = User(email=email, password=password1, nickname=nickname)
