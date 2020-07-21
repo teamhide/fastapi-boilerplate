@@ -7,7 +7,7 @@ class Config(BaseSettings):
     ENV: str = 'development'
     DEBUG: bool = True
     APP_HOST: str = '0.0.0.0'
-    APP_PORT: str = 8000
+    APP_PORT: int = 8000
     DB_USER: str = 'fastapi'
     DB_PASS: str = 'fastapi'
     DB_HOST: str = 'localhost'
