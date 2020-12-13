@@ -6,22 +6,22 @@ from app.views import home_router
 from app.views.v1 import user_router
 from core.config import get_config
 from core.db import session
-from core.exception import CustomException
+from core.exceptions import CustomException
 
 
 def init_cors(app: FastAPI) -> None:
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=['*'],
+        allow_origins=["*"],
         allow_credentials=True,
-        allow_methods=['*'],
-        allow_headers=['*'],
+        allow_methods=["*"],
+        allow_headers=["*"],
     )
 
 
 def init_routers(app: FastAPI) -> None:
     app.include_router(home_router)
-    app.include_router(user_router, prefix='/api/v1', tags=['User'])
+    app.include_router(user_router, prefix="/api/v1/users", tags=["User"])
 
 
 def init_listeners(app: FastAPI) -> None:
@@ -30,11 +30,11 @@ def init_listeners(app: FastAPI) -> None:
     async def custom_exception_handler(request: Request, exc: CustomException):
         return JSONResponse(
             status_code=exc.code,
-            content=exc.kwargs,
+            content={"error_code": exc.error_code, "message": exc.message},
         )
 
     # Middleware for SQLAlchemy session
-    @app.middleware('http')
+    @app.middleware("http")
     async def remove_session(request: Request, call_next):
         try:
             response = await call_next(request)
@@ -48,11 +48,11 @@ def init_listeners(app: FastAPI) -> None:
 
 def create_app() -> FastAPI:
     app = FastAPI(
-        title='Hide',
-        description='Hide API',
-        version='1.0.0',
-        docs_url=None if get_config().ENV == 'production' else '/docs',
-        redoc_url=None if get_config().ENV == 'production' else '/redoc',
+        title="Hide",
+        description="Hide API",
+        version="1.0.0",
+        docs_url=None if get_config().ENV == "production" else "/docs",
+        redoc_url=None if get_config().ENV == "production" else "/redoc",
     )
     init_routers(app=app)
     init_cors(app=app)

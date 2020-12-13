@@ -5,7 +5,7 @@ from core.db.mixins import TimestampMixin
 
 
 class User(Base, TimestampMixin):
-    __tablename__ = 'users'
+    __tablename__ = "users"
 
     id = Column(BigInteger, primary_key=True, autoincrement=True)
     password = Column(Unicode(255), nullable=False)
