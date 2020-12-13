@@ -36,8 +36,13 @@ def init_listeners(app: FastAPI) -> None:
     # Middleware for SQLAlchemy session
     @app.middleware('http')
     async def remove_session(request: Request, call_next):
-        response = await call_next(request)
-        session.remove()
+        try:
+            response = await call_next(request)
+        except Exception as e:
+            raise e from None
+        finally:
+            session.remove()
+
         return response
 
 
