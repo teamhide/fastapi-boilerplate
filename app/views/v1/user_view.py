@@ -9,7 +9,7 @@ from app.schemas import (
     CreateUserResponseSchema,
 )
 from app.usecases import CreateUserUsecase, GetUserListUsecase
-from core.dependencies import extract_token
+from core.fastapi.dependencies import extract_token
 
 user_router = APIRouter()
 
@@ -18,7 +18,7 @@ user_router = APIRouter()
     "",
     response_model=List[GetUserListResponseSchema],
     response_model_exclude={"id"},
-    responses={"400": {"model": ExceptionResponseSchema},},
+    responses={"400": {"model": ExceptionResponseSchema}},
 )
 async def get_user_list(
     limit: int = 10, prev: int = None, payload: dict = Depends(extract_token),
@@ -29,7 +29,7 @@ async def get_user_list(
 @user_router.post(
     "",
     response_model=CreateUserResponseSchema,
-    responses={"400": {"model": ExceptionResponseSchema},},
+    responses={"400": {"model": ExceptionResponseSchema}},
 )
 async def create_user(
     request: CreateUserRequestSchema, payload: dict = Depends(extract_token),

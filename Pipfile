@@ -9,9 +9,9 @@ verify_ssl = true
 fastapi = "*"
 alembic = "*"
 sqlalchemy = "*"
-uvicorn = "*"
 pyjwt = "*"
 pymysql = "*"
+uvicorn = {extras = ["standard"],version = ">=0.11.7"}
 
 [requires]
 python_version = "3.8"

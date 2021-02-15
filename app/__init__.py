@@ -6,7 +6,7 @@ from app.views import home_router
 from app.views.v1 import user_router
 from core.config import get_config
 from core.exceptions import CustomException
-from core.middlewares import SQLAlchemyMiddleware
+from core.fastapi.middlewares import SQLAlchemyMiddleware
 
 
 def init_cors(app: FastAPI) -> None:
