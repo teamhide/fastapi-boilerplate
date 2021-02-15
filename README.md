@@ -25,7 +25,9 @@ def home(request: Request):
     return request.user.id
 ```
 
-Custom user class automatically decoded header token and store user information into `request.user`
+**Note. you have to pass jwt token via header like `Authorization: Bearer 1234`**
+
+Custom user class automatically decode header token and store user information into `request.user`
 
 If you want to modify custom user class, you have to update below files.
 
@@ -55,6 +57,7 @@ Set callable function to FastAPI() `dependencies` argument.
 ## Dependencies for specific permissions
 
 ### IsAuthenticated
-
+Coming soon...
 
 ### IsAdmin
+Coming soon...
