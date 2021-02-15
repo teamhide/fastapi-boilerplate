@@ -1,5 +1,11 @@
 # FastAPI Boilerplate
 
+### Features
+- SQlAlchemy session
+- Custom user class
+- Top-level dependency
+- Dependencies for specific permissions
+
 ## SQLAlchemy for asyncio context
 
 ```python
@@ -41,3 +47,14 @@ current_user = CurrentUser()
 ```
 
 After line 18, assign values that you added on `CurrentUser`.
+
+## Top-level dependency
+
+Set callable function to FastAPI() `dependencies` argument.
+
+## Dependencies for specific permissions
+
+### IsAuthenticated
+
+
+### IsAdmin
