@@ -1,6 +1,6 @@
 # FastAPI Boilerplate
 
-### Features
+# Features
 - SQlAlchemy session
 - Custom user class
 - Top-level dependency
@@ -27,7 +27,7 @@ def home(request: Request):
 
 **Note. you have to pass jwt token via header like `Authorization: Bearer 1234`**
 
-Custom user class automatically decode header token and store user information into `request.user`
+Custom user class automatically decodes header token and store user information into `request.user`
 
 If you want to modify custom user class, you have to update below files.
 
@@ -40,7 +40,8 @@ If you want to modify custom user class, you have to update below files.
 class CurrentUser(BaseModel):
     id: int = None
 ```
-Just add more fields that you need.
+
+Simply add more fields based on your needs.
 
 ### AuthBackend
 
@@ -52,7 +53,7 @@ After line 18, assign values that you added on `CurrentUser`.
 
 ## Top-level dependency
 
-Set callable function to FastAPI() `dependencies` argument.
+Set a callable function when initialize FastAPI() app through `dependencies` argument.
 
 ## Dependencies for specific permissions
 
