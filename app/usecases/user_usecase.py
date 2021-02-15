@@ -37,7 +37,7 @@ class CreateUserUsecase(UserUsecase):
 
         if (
             session.query(User)
-            .filter(or_(User.email == email, User.nickname == nickname),)
+            .filter(or_(User.email == email, User.nickname == nickname))
             .first()
         ):
             raise DuplicateEmailOrNicknameException

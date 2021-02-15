@@ -1,6 +1,6 @@
 from typing import List
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter
 
 from app.schemas import (
     ExceptionResponseSchema,
@@ -9,7 +9,6 @@ from app.schemas import (
     CreateUserResponseSchema,
 )
 from app.usecases import CreateUserUsecase, GetUserListUsecase
-from core.fastapi.dependencies import extract_token
 
 user_router = APIRouter()
 
@@ -20,9 +19,7 @@ user_router = APIRouter()
     response_model_exclude={"id"},
     responses={"400": {"model": ExceptionResponseSchema}},
 )
-async def get_user_list(
-    limit: int = 10, prev: int = None, payload: dict = Depends(extract_token),
-):
+async def get_user_list(limit: int = 10, prev: int = None):
     return await GetUserListUsecase().execute(limit=limit, prev=prev)
 
 
@@ -31,7 +28,5 @@ async def get_user_list(
     response_model=CreateUserResponseSchema,
     responses={"400": {"model": ExceptionResponseSchema}},
 )
-async def create_user(
-    request: CreateUserRequestSchema, payload: dict = Depends(extract_token),
-):
+async def create_user(request: CreateUserRequestSchema):
     return await CreateUserUsecase().execute(**request.dict())
