@@ -6,7 +6,11 @@ from app.views import home_router
 from app.views.v1 import user_router
 from core.config import get_config
 from core.exceptions import CustomException
-from core.fastapi.middlewares import SQLAlchemyMiddleware
+from core.fastapi.middlewares import (
+    SQLAlchemyMiddleware,
+    AuthenticationMiddleware,
+    AuthBackend,
+)
 
 
 def init_cors(app: FastAPI) -> None:
@@ -34,8 +38,23 @@ def init_listeners(app: FastAPI) -> None:
         )
 
 
+def on_auth_error(request: Request, exc: Exception):
+    status_code, error_code, message = 401, None, str(exc)
+    if isinstance(exc, CustomException):
+        status_code = int(exc.code)
+        error_code = exc.error_code
+        message = exc.message
+
+    return JSONResponse(
+        status_code=status_code, content={"error_code": error_code, "message": message},
+    )
+
+
 def init_middleware(app: FastAPI) -> None:
     app.add_middleware(SQLAlchemyMiddleware)
+    app.add_middleware(
+        AuthenticationMiddleware, backend=AuthBackend(), on_error=on_auth_error,
+    )
 
 
 def create_app() -> FastAPI:
