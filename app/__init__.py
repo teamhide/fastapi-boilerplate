@@ -5,8 +5,8 @@ from fastapi.responses import JSONResponse
 from app.views import home_router
 from app.views.v1 import user_router
 from core.config import get_config
-from core.db import session
 from core.exceptions import CustomException
+from core.middlewares import SQLAlchemyMiddleware
 
 
 def init_cors(app: FastAPI) -> None:
@@ -33,17 +33,9 @@ def init_listeners(app: FastAPI) -> None:
             content={"error_code": exc.error_code, "message": exc.message},
         )
 
-    # Middleware for SQLAlchemy session
-    @app.middleware("http")
-    async def remove_session(request: Request, call_next):
-        try:
-            response = await call_next(request)
-        except Exception as e:
-            raise e from None
-        finally:
-            session.remove()
 
-        return response
+def init_middleware(app: FastAPI) -> None:
+    app.add_middleware(SQLAlchemyMiddleware)
 
 
 def create_app() -> FastAPI:
@@ -57,6 +49,7 @@ def create_app() -> FastAPI:
     init_routers(app=app)
     init_cors(app=app)
     init_listeners(app=app)
+    init_middleware(app=app)
     return app
 
 
