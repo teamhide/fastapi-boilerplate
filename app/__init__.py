@@ -6,7 +6,7 @@ from app.views import home_router
 from app.views.v1 import user_router
 from core.config import get_config
 from core.exceptions import CustomException
-from core.fastapi.dependencies import logging
+from core.fastapi.dependencies import Logging
 from core.fastapi.middlewares import (
     SQLAlchemyMiddleware,
     AuthenticationMiddleware,
@@ -25,7 +25,7 @@ def init_cors(app: FastAPI) -> None:
 
 
 def init_routers(app: FastAPI) -> None:
-    app.include_router(home_router, dependencies=[])
+    app.include_router(home_router)
     app.include_router(user_router, prefix="/api/v1/users", tags=["User"])
 
 
@@ -65,7 +65,7 @@ def create_app() -> FastAPI:
         version="1.0.0",
         docs_url=None if get_config().ENV == "production" else "/docs",
         redoc_url=None if get_config().ENV == "production" else "/redoc",
-        dependencies=[Depends(logging)],
+        dependencies=[Depends(Logging)],
     )
     init_routers(app=app)
     init_cors(app=app)

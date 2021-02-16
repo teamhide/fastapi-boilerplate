@@ -15,7 +15,7 @@ class Config(BaseSettings):
 
 
 class DevelopmentConfig(Config):
-    DB_URL: str = f"mysql+pymysql://fastapi:fastapi@localhost:3306/dev"
+    DB_URL: str = f"mysql+pymysql://fastapi:fastapi@localhost:3306/fastapi"
 
 
 class TestingConfig(Config):
