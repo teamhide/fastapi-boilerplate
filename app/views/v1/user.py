@@ -8,7 +8,7 @@ from app.schemas import (
     CreateUserRequestSchema,
     CreateUserResponseSchema,
 )
-from app.usecases import CreateUserUsecase, GetUserListUsecase
+from app.usecases import UserUsecase
 
 user_router = APIRouter()
 
@@ -20,7 +20,7 @@ user_router = APIRouter()
     responses={"400": {"model": ExceptionResponseSchema}},
 )
 async def get_user_list(limit: int = 10, prev: int = None):
-    return await GetUserListUsecase().execute(limit=limit, prev=prev)
+    return await UserUsecase().get_user_list(limit=limit, prev=prev)
 
 
 @user_router.post(
@@ -29,4 +29,4 @@ async def get_user_list(limit: int = 10, prev: int = None):
     responses={"400": {"model": ExceptionResponseSchema}},
 )
 async def create_user(request: CreateUserRequestSchema):
-    return await CreateUserUsecase().execute(**request.dict())
+    return await UserUsecase().create_user(**request.dict())

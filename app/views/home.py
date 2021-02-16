@@ -1,11 +1,8 @@
-from fastapi import APIRouter, Depends
-from core.fastapi.dependencies import IsAdmin, PermissionDependency
+from fastapi import APIRouter
 
 home_router = APIRouter()
 
 
-@home_router.get("/", dependencies=[
-    Depends(PermissionDependency([IsAdmin]))
-])
+@home_router.get("/")
 def home():
     return {"status": True}

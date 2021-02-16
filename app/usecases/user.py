@@ -14,9 +14,7 @@ class UserUsecase:
     def __init__(self):
         pass
 
-
-class GetUserListUsecase(UserUsecase):
-    async def execute(self, limit: int, prev: Optional[int]) -> List[User]:
+    async def get_user_list(self, limit: int, prev: Optional[int]) -> List[User]:
         query = session.query(User)
 
         if prev:
@@ -27,10 +25,8 @@ class GetUserListUsecase(UserUsecase):
 
         return query.order_by(User.id.desc()).limit(limit).all()
 
-
-class CreateUserUsecase(UserUsecase):
-    async def execute(
-        self, email: str, password1: str, password2: str, nickname: str,
+    async def create_user(
+        self, email: str, password1: str, password2: str, nickname: str
     ) -> Union[User, NoReturn]:
         if password1 != password2:
             raise PasswordDoesNotMatchException
