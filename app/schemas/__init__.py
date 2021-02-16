@@ -1,4 +1,4 @@
-from .user_schema import *
+from .user import *
 
 
 class ExceptionResponseSchema(BaseModel):

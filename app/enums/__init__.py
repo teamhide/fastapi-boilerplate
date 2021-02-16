@@ -1,1 +1,5 @@
-from .user_enum import *
+from enum import Enum
+
+
+class BaseEnum(Enum):
+    pass

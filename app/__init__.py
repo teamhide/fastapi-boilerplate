@@ -65,7 +65,7 @@ def create_app() -> FastAPI:
         version="1.0.0",
         docs_url=None if get_config().ENV == "production" else "/docs",
         redoc_url=None if get_config().ENV == "production" else "/redoc",
-        dependencies=[Depends(logging)]
+        dependencies=[Depends(logging)],
     )
     init_routers(app=app)
     init_cors(app=app)

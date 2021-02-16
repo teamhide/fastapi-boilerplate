@@ -1,1 +1,1 @@
-from .user_view import *
+from .user import user_router

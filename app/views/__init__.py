@@ -1,1 +1,1 @@
-from .home_view import *
+from .home import home_router
