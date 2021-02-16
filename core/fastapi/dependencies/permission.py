@@ -1,3 +1,4 @@
+from abc import ABC, abstractmethod
 from typing import List
 
 from fastapi import Request
@@ -5,7 +6,7 @@ from fastapi.openapi.models import APIKey, APIKeyIn
 from fastapi.security.base import SecurityBase
 
 from app.usecases import UserUsecase
-from core.exceptions import UnauthorizedException
+from core.exceptions import CustomException, UnauthorizedException
 
 
 class PermissionDependency(SecurityBase):
@@ -21,17 +22,25 @@ class PermissionDependency(SecurityBase):
                 raise cls.exception
 
 
-class IsAuthenticated:
+class BasePermission(ABC):
+    exception = CustomException
+
+    @abstractmethod
+    async def has_permission(self, request: Request) -> bool:
+        pass
+
+
+class IsAuthenticated(BasePermission):
     exception = UnauthorizedException
 
-    async def has_permission(self, request: Request):
+    async def has_permission(self, request: Request) -> bool:
         return request.user.id is not None
 
 
-class IsAdmin:
+class IsAdmin(BasePermission):
     exception = UnauthorizedException
 
-    async def has_permission(self, request: Request):
+    async def has_permission(self, request: Request) -> bool:
         user_id = request.user.id
         if not user_id:
             return False
