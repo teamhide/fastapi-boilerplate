@@ -43,3 +43,13 @@ class UserUsecase:
         session.commit()
 
         return user
+
+    async def is_admin(self, user_id: int) -> bool:
+        user = session.query(User).get(user_id)
+        if not user:
+            return False
+
+        if user.is_admin is False:
+            return False
+
+        return True

@@ -1,6 +1,6 @@
 from typing import List
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 
 from app.schemas import (
     ExceptionResponseSchema,
@@ -9,6 +9,10 @@ from app.schemas import (
     CreateUserResponseSchema,
 )
 from app.usecases import UserUsecase
+from core.fastapi.dependencies import (
+    PermissionDependency,
+    IsAdmin,
+)
 
 user_router = APIRouter()
 
@@ -18,6 +22,7 @@ user_router = APIRouter()
     response_model=List[GetUserListResponseSchema],
     response_model_exclude={"id"},
     responses={"400": {"model": ExceptionResponseSchema}},
+    dependencies=[Depends(PermissionDependency([IsAdmin]))],
 )
 async def get_user_list(limit: int = 10, prev: int = None):
     return await UserUsecase().get_user_list(limit=limit, prev=prev)

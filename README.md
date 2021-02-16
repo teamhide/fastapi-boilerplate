@@ -64,5 +64,23 @@ There is 2 permissions `IsAdmin` and `IsAuthenticated`.
 `IsAuthenticated` check current user is authenticated.
  
 ```python
+from core.fastapi.dependencies import (
+    PermissionDependency,
+    IsAdmin,
+)
 
+
+user_router = APIRouter()
+
+
+@user_router.get(
+    "",
+    response_model=List[GetUserListResponseSchema],
+    response_model_exclude={"id"},
+    responses={"400": {"model": ExceptionResponseSchema}},
+    dependencies=[Depends(PermissionDependency([IsAdmin]))],  # HERE
+)
+async def get_user_list(limit: int = 10, prev: int = None):
+    pass
 ```
+Insert permission through `dependencies` argument.
