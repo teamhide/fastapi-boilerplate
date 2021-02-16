@@ -57,8 +57,12 @@ Set a callable function when initialize FastAPI() app through `dependencies` arg
 
 ## Dependencies for specific permissions
 
-### IsAuthenticated
-Coming soon...
+There is 2 permissions `IsAdmin` and `IsAuthenticated`.
 
-### IsAdmin
-Coming soon...
+`IsAdmin` check current user is admin or not.
+
+`IsAuthenticated` check current user is authenticated.
+ 
+```python
+
+```
