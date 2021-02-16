@@ -3,6 +3,7 @@ from typing import Optional, List, Union, NoReturn
 from sqlalchemy import or_
 
 from app.models import User
+from core.db import Transaction
 from core.db import session
 from core.exceptions import (
     PasswordDoesNotMatchException,
@@ -25,6 +26,7 @@ class UserUsecase:
 
         return query.order_by(User.id.desc()).limit(limit).all()
 
+    @Transaction()
     async def create_user(
         self, email: str, password1: str, password2: str, nickname: str
     ) -> Union[User, NoReturn]:
@@ -40,7 +42,6 @@ class UserUsecase:
 
         user = User(email=email, password=password1, nickname=nickname)
         session.add(user)
-        session.commit()
 
         return user
 
