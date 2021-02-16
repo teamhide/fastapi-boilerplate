@@ -31,8 +31,8 @@ Custom user class automatically decodes header token and store user information 
 
 If you want to modify custom user class, you have to update below files.
 
-1. core/fastapi/schemas/current_user.py
-2. core/fastapi/middlewares/authentication.py
+1. `core/fastapi/schemas/current_user.py`
+2. `core/fastapi/middlewares/authentication.py`
 
 ### CurrentUser
 
@@ -53,7 +53,11 @@ After line 18, assign values that you added on `CurrentUser`.
 
 ## Top-level dependency
 
+**Note. Available from version 0.62 or higher.**
+
 Set a callable function when initialize FastAPI() app through `dependencies` argument.
+
+Refer `Logging` class inside of `core/fastapi/dependencies/logging.py` 
 
 ## Dependencies for specific permissions
 

@@ -1,8 +1,8 @@
-from .logging import logging
+from .logging import Logging
 from .permission import PermissionDependency, IsAuthenticated, IsAdmin
 
 __all__ = [
-    "logging",
+    "Logging",
     "PermissionDependency",
     "IsAuthenticated",
     "IsAdmin",
