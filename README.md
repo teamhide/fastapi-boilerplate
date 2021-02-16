@@ -8,11 +8,37 @@
 
 ## SQLAlchemy for asyncio context
 
+### Session
 ```python
 from core.db import session
 ```
 Just import session and use it.
 
+### Transaction
+
+To guarantee of transaction, session's `autocommit` option is `True`.
+
+So you have to use `Transaction` class.
+
+```python
+from core.db import Transaction, session
+
+
+@Transaction()
+async def create_user(self):
+    session.add(User(email="padocon@naver.com"))
+```
+Usage as decorator.
+```python
+from core.db import Transaction, session
+
+
+with Transaction():
+    session.add(User(email="padocon@naver.com"))
+```
+Usage as context manager.
+
+**Note. Do not use explicit `commit()`. `Transaction` class automatically do.**
 
 ## Custom user for authentication
 
