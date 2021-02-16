@@ -8,7 +8,7 @@ class Transaction:
         @wraps(function)
         async def decorator(*args, **kwargs):
             try:
-                session.begin()
+                session.begin(subtransactions=True)
                 result = await function(*args, **kwargs)
                 session.commit()
             except Exception as e:
@@ -19,7 +19,7 @@ class Transaction:
         return decorator
 
     def __enter__(self):
-        session.begin()
+        session.begin(subtransactions=True)
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
