@@ -57,11 +57,7 @@ Set a callable function when initialize FastAPI() app through `dependencies` arg
 
 ## Dependencies for specific permissions
 
-There is 2 permissions `IsAdmin` and `IsAuthenticated`.
-
-`IsAdmin` check current user is admin or not.
-
-`IsAuthenticated` check current user is authenticated.
+Permissions `IsAdmin` and `IsAuthenticated` have already been implemented.
  
 ```python
 from core.fastapi.dependencies import (
@@ -84,3 +80,5 @@ async def get_user_list(limit: int = 10, prev: int = None):
     pass
 ```
 Insert permission through `dependencies` argument.
+
+If you want to make your own permission, inherit `BasePermission` and implement `has_permission()` function.
