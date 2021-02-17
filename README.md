@@ -5,6 +5,7 @@
 - Custom user class
 - Top-level dependency
 - Dependencies for specific permissions
+- Celery
 
 ## SQLAlchemy for asyncio context
 
@@ -37,6 +38,8 @@ with Transaction():
     session.add(User(email="padocon@naver.com"))
 ```
 Usage as context manager.
+
+In this case, only one transaction is supported.
 
 **Note. Do not use explicit `commit()`. `Transaction` class automatically do.**
 

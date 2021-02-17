@@ -12,6 +12,7 @@ pyjwt = "*"
 pymysql = "*"
 uvicorn = {extras = ["standard"],version = ">=0.11.7"}
 fastapi = ">=0.62.0"
+celery = "*"
 
 [requires]
 python_version = "3.8"
