@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from app.views import home_router
-from app.views.v1 import user_router
+from app.views.v1 import sub_router as v1_router
 from core.config import config
 from core.exceptions import CustomException
 from core.fastapi.dependencies import Logging
@@ -26,7 +26,7 @@ def init_cors(app: FastAPI) -> None:
 
 def init_routers(app: FastAPI) -> None:
     app.include_router(home_router)
-    app.include_router(user_router, prefix="/api/v1/users", tags=["User"])
+    app.include_router(v1_router, prefix="/api/v1", tags=["User"])
 
 
 def init_listeners(app: FastAPI) -> None:
