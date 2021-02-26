@@ -4,7 +4,7 @@ from fastapi.responses import JSONResponse
 
 from app.views import home_router
 from app.views.v1 import user_router
-from core.config import get_config
+from core.config import config
 from core.exceptions import CustomException
 from core.fastapi.dependencies import Logging
 from core.fastapi.middlewares import (
@@ -63,8 +63,8 @@ def create_app() -> FastAPI:
         title="Hide",
         description="Hide API",
         version="1.0.0",
-        docs_url=None if get_config().ENV == "production" else "/docs",
-        redoc_url=None if get_config().ENV == "production" else "/redoc",
+        docs_url=None if config.ENV == "production" else "/docs",
+        redoc_url=None if config.ENV == "production" else "/redoc",
         dependencies=[Depends(Logging)],
     )
     init_routers(app=app)

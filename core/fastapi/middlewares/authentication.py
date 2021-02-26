@@ -7,7 +7,7 @@ from starlette.middleware.authentication import (
 )
 from starlette.requests import HTTPConnection
 
-from core.config import get_config
+from core.config import config
 from ..schemas import CurrentUser
 
 
@@ -20,7 +20,6 @@ class AuthBackend(AuthenticationBackend):
         if not authorization:
             return False, current_user
 
-        config = get_config()
         try:
             scheme, credentials = authorization.split(" ")
             if scheme.lower() != "bearer":

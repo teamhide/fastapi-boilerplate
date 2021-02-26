@@ -49,6 +49,7 @@ class Transaction:
         return result
 
     async def run_requires_new(self, function, args, kwargs):
+        session.query()
         if not session().is_active:
             session.begin()
 

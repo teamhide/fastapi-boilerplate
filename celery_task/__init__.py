@@ -1,8 +1,7 @@
 from celery import Celery
-from core.config import get_config
+from core.config import config
 
 
-config = get_config()
 celery_app = Celery(
     "worker",
     backend=config.CELERY_BACKEND_URL,
