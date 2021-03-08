@@ -6,6 +6,7 @@
 - Top-level dependency
 - Dependencies for specific permissions
 - Celery
+- Dockerize(Hot reload)
 
 ## SQLAlchemy for asyncio context
 
