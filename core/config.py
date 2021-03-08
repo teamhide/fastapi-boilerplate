@@ -12,15 +12,19 @@ class Config(BaseSettings):
     JWT_SECRET_KEY: str = "fastapi"
     JWT_ALGORITHM: str = "HS256"
     SENTRY_SDN: str = None
-    CELERY_BROKER_URL: str = "amqp://user:bitnami@localhost:5672//"
+    CELERY_BROKER_URL: str = "amqp://user:bitnami@localhost:5672/"
     CELERY_BACKEND_URL: str = "redis://:password123@localhost:6379/0"
+    REDIS_HOST: str = "localhost"
+    REDIS_PORT: int = 6379
 
 
 class DevelopmentConfig(Config):
-    DB_URL: str = f"mysql+pymysql://fastapi:fastapi@localhost:3306/fastapi"
+    DB_URL: str = f"mysql+pymysql://root:fastapi@db:3306/fastapi"
+    REDIS_HOST: str = "localhost"
+    REDIS_PORT: int = 6379
 
 
-class TestingConfig(Config):
+class LocalConfig(Config):
     DB_URL: str = f"mysql+pymysql://fastapi:fastapi@localhost:3306/test"
 
 
@@ -30,10 +34,10 @@ class ProductionConfig(Config):
 
 
 def get_config():
-    env = os.getenv("ENV", "development")
+    env = os.getenv("ENV", "local")
     config_type = {
         "development": DevelopmentConfig(),
-        "testing": TestingConfig(),
+        "local": LocalConfig(),
         "production": ProductionConfig(),
     }
     return config_type[env]
