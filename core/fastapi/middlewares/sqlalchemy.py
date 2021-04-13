@@ -7,25 +7,20 @@ from starlette.middleware.base import (
     RequestResponseEndpoint,
 )
 
-from core.db import session
+from core.db import session, set_session_id, reset_session_id
 
 session_context = ContextVar("session_context")
-
-
-def get_request_id():
-    return session_context.get()
 
 
 class SQLAlchemyMiddleware(BaseHTTPMiddleware):
     def __init__(self, app):
         super().__init__(app)
-        session.registry.scopefunc = get_request_id
 
     async def dispatch(
         self, request: Request, call_next: RequestResponseEndpoint,
     ):
-        request_id = str(uuid4())
-        token = session_context.set(request_id)
+        session_id = str(uuid4())
+        set_session_id(session_id=session_id)
 
         try:
             response = await call_next(request)
@@ -34,6 +29,6 @@ class SQLAlchemyMiddleware(BaseHTTPMiddleware):
             raise e
         finally:
             session.remove()
-            session_context.reset(token)
+            reset_session_id(session_id=session_id)
 
         return response
