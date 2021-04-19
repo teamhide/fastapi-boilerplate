@@ -14,12 +14,12 @@ def get_session_id() -> str:
     return session_context.get()
 
 
-def set_session_id(session_id: str) -> Token[str]:
+def set_session_context(session_id: str) -> Token:
     return session_context.set(session_id)
 
 
-def reset_session_id(session_id: str) -> None:
-    session_context.reset(session_id)
+def reset_session_context(context: Token) -> None:
+    session_context.reset(context)
 
 
 engine = create_engine(config.DB_URL, pool_recycle=3600)

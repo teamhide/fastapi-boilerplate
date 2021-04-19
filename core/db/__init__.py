@@ -1,4 +1,4 @@
-from .session import Base, session, set_session_id, reset_session_id
+from .session import Base, session, set_session_context, reset_session_context
 from .transaction import Transaction, Propagation
 
 
@@ -7,6 +7,6 @@ __all__ = [
     "session",
     "Transaction",
     "Propagation",
-    "set_session_id",
-    "reset_session_id",
+    "set_session_context",
+    "reset_session_context",
 ]

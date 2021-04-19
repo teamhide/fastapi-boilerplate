@@ -4,5 +4,5 @@ home_router = APIRouter()
 
 
 @home_router.get("/")
-def home():
+async def home():
     return {"status": True}
