@@ -1,4 +1,4 @@
-FROM python:3.8.2
+FROM tiangolo/uvicorn-gunicorn-fastapi:python3.8
 MAINTAINER Hide <padocon@naver.com>
 
 COPY . /home
