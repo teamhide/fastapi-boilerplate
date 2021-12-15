@@ -1,12 +1,13 @@
 # FastAPI Boilerplate
 
 # Features
-- SQlAlchemy session
+- SQLAlchemy session
 - Custom user class
 - Top-level dependency
 - Dependencies for specific permissions
 - Celery
 - Dockerize(Hot reload)
+- Event Publisher
 
 ## SQLAlchemy for asyncio context
 
@@ -133,3 +134,66 @@ async def get_user_list(limit: int = 10, prev: int = None):
 Insert permission through `dependencies` argument.
 
 If you want to make your own permission, inherit `BasePermission` and implement `has_permission()` function.
+
+## Event Publisher
+
+First, you have to make your own event through inherit `BaseEvent`.
+
+```python
+from core.event.base_event import BaseEvent
+from core.event.slack.parameter import SlackEventParameter
+
+
+class SlackEvent(BaseEvent):
+    async def run(self, parameter: SlackEventParameter) -> None:
+        print(f"SLACK EVENT / {parameter.channel} / {parameter.message}")
+```
+
+(Optional) If you want to use parameter, make parameter class.
+
+```python
+from pydantic import BaseModel
+
+
+class SlackEventParameter(BaseModel):
+    channel: str
+    message: str
+```
+
+Add `@EventListener()` decorator to your method that will publish event.
+```python
+from core.event.slack import SlackEvent
+from core.event import EventListener
+
+
+@EventListener()
+async def test():
+    pass
+```
+
+Store event via `EventHandler` class.
+
+```python
+from core.event import get_event_handler
+from core.event.slack import SlackEvent, SlackEventParameter
+
+
+@EventListener()
+async def test():
+    event_handler = get_event_handler()
+    await event_handler.store(
+        event=SlackEvent,
+        parameter=SlackEventParameter(channel="channel", message="message"),
+    )
+```
+
+Then, `@EventListener` automatically publish event.
+
+In case of use with `@Transactional`, you have to used in the outermost.
+
+```python
+@EventListener()  # HERE
+@Transactional()
+async def test():
+    ...
+```

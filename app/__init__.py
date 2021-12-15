@@ -11,6 +11,7 @@ from core.fastapi.middlewares import (
     SQLAlchemyMiddleware,
     AuthenticationMiddleware,
     AuthBackend,
+    EventMiddleware,
 )
 
 
@@ -56,6 +57,7 @@ def init_middleware(app: FastAPI) -> None:
     app.add_middleware(
         AuthenticationMiddleware, backend=AuthBackend(), on_error=on_auth_error,
     )
+    app.add_middleware(EventMiddleware)
 
 
 def create_app() -> FastAPI:

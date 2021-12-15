@@ -8,7 +8,7 @@ class CustomException(Exception):
 
     def __init__(self, message=None):
         if message:
-            self. message = message
+            self.message = message
 
 
 class BadRequestException(CustomException):
