@@ -1,18 +1,28 @@
 from contextvars import ContextVar, Token
-from typing import Type, Optional, Dict, Union
+from typing import Type, Dict, Union
 
 from pydantic import BaseModel
 
 from core.event.base_event import BaseEvent
+from core.event.exceptions import (
+    InvalidEventTypeException,
+    InvalidParameterTypeException,
+)
 
 
 class EventHandler:
     def __init__(self):
-        self.events: Dict[Type[BaseEvent], Union[Type[BaseModel], None]] = {}
+        self.events: Dict[Type[BaseEvent], Union[BaseModel, None]] = {}
 
     async def store(
-        self, event: Type[BaseEvent], parameter: Optional[BaseModel] = None,
+        self, event: Type[BaseEvent], parameter: BaseModel = None,
     ) -> None:
+        if not issubclass(event, BaseEvent):
+            raise InvalidEventTypeException
+
+        if parameter and not isinstance(parameter, BaseModel):
+            raise InvalidParameterTypeException
+
         self.events[event] = parameter
 
     async def publish(self) -> None:

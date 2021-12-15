@@ -1,7 +1,4 @@
-from enum import Enum
-
-
-class ErrorCode(str, Enum):
+class ErrorCode:
     class Token:
         DecodeToken = 10000
         ExpiredToken = 10001

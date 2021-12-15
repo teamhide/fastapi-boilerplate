@@ -1,4 +1,4 @@
-from core.event import get_event_handler
+from core.event.event_handler import get_event_handler
 
 
 class EventListener:
