@@ -8,7 +8,7 @@ from app.schemas import (
     CreateUserRequestSchema,
     CreateUserResponseSchema,
 )
-from app.usecases import UserUsecase
+from app.services import UserService
 from core.fastapi.dependencies import (
     PermissionDependency,
     IsAdmin,
@@ -25,7 +25,7 @@ user_router = APIRouter()
     dependencies=[Depends(PermissionDependency([IsAdmin]))],
 )
 async def get_user_list(limit: int = 10, prev: int = None):
-    return await UserUsecase().get_user_list(limit=limit, prev=prev)
+    return await UserService().get_user_list(limit=limit, prev=prev)
 
 
 @user_router.post(
@@ -34,4 +34,4 @@ async def get_user_list(limit: int = 10, prev: int = None):
     responses={"400": {"model": ExceptionResponseSchema}},
 )
 async def create_user(request: CreateUserRequestSchema):
-    return await UserUsecase().create_user(**request.dict())
+    return await UserService().create_user(**request.dict())

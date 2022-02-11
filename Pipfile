@@ -16,7 +16,7 @@ celery = "*"
 gunicorn = "*"
 fastapi-event = "*"
 pythondi = "*"
-
+aioredis = "*"
 
 [requires]
 python_version = "3.8"

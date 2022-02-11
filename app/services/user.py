@@ -11,7 +11,7 @@ from core.exceptions import (
 )
 
 
-class UserUsecase:
+class UserService:
     def __init__(self):
         pass
 

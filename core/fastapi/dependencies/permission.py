@@ -5,7 +5,7 @@ from fastapi import Request
 from fastapi.openapi.models import APIKey, APIKeyIn
 from fastapi.security.base import SecurityBase
 
-from app.usecases import UserUsecase
+from app.services import UserService
 from core.exceptions import CustomException, UnauthorizedException
 
 
@@ -45,4 +45,4 @@ class IsAdmin(BasePermission):
         if not user_id:
             return False
 
-        return await UserUsecase().is_admin(user_id=user_id)
+        return await UserService().is_admin(user_id=user_id)

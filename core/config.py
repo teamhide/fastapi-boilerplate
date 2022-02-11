@@ -43,4 +43,4 @@ def get_config():
     return config_type[env]
 
 
-config = get_config()
+config: Config = get_config()
