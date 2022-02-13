@@ -8,6 +8,7 @@
 - Celery
 - Dockerize(Hot reload)
 - Event dispatcher
+- Cache
 
 ## SQLAlchemy for asyncio context
 
@@ -138,3 +139,18 @@ If you want to make your own permission, inherit `BasePermission` and implement 
 ## Event dispatcher
 
 Refer the README of https://github.com/teamhide/fastapi-event
+
+## Cache
+
+```python
+from core.helpers.cache import Cacheable
+
+
+@Cacheable(prefix="get_user", ttl=60)
+async def get_user():
+    ...
+```
+
+Use the `Cacheable` decorator to cache the return value of a function.
+
+Depending on the argument of the function, caching is stored with a different value through internal processing.

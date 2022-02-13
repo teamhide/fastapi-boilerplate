@@ -17,6 +17,7 @@ gunicorn = "*"
 fastapi-event = "*"
 pythondi = "*"
 aioredis = "*"
+ujson = "*"
 
 [requires]
 python_version = "3.8"
