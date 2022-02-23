@@ -154,3 +154,57 @@ async def get_user():
 Use the `Cacheable` decorator to cache the return value of a function.
 
 Depending on the argument of the function, caching is stored with a different value through internal processing.
+
+### Custom Key builder
+
+```python
+from core.helpers.cache.base import BaseKeyMaker
+
+
+class CustomKeyMaker(BaseKeyMaker):
+    async def make(self, function: Callable) -> str:
+        ...
+```
+
+If you want to create a custom key, inherit the `BaseKeyMaker` class and implement the `make()` method.
+
+```python
+@Cacheable(prefix="get_user", ttl=60, key_maker=CustomKeyMaker)
+```
+
+And pass your class via `key_maker` arguments.
+
+If no value is given to the `key_maker` argument, the function implemented by default is used.
+
+### Custom Backend
+
+```python
+from core.helpers.cache.base import BaseBackend
+
+
+class RedisBackend(BaseBackend):
+    async def get(self, key: str) -> Any:
+        ...
+
+    async def save(self, response: Any, key: str) -> None:
+        ...
+```
+
+If you want to create a custom key, inherit the `BaseBackend` class and implement the `get()` and `save()` method.
+
+```python
+@Cacheable(prefix="get_user", ttl=60, backend=RedisBackend)
+```
+
+And pass your class via `backend` arguments.
+
+If no value is given to the `backend` argument, the function implemented by default is used.
+
+### Set default backend/keymaker
+
+```python
+Cacheable.init_backend(backend=RedisBackend)
+Cacheable.init_key_maker(backend=CustomKeyMaker)
+```
+
+Add the above line when the server is startup.
