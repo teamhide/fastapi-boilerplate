@@ -32,7 +32,9 @@ class AuthBackend(AuthenticationBackend):
 
         try:
             payload = jwt.decode(
-                credentials, config.JWT_SECRET_KEY, algorithms=[config.JWT_ALGORITHM],
+                credentials,
+                config.JWT_SECRET_KEY,
+                algorithms=[config.JWT_ALGORITHM],
             )
             user_id = payload.get("user_id")
         except jwt.exceptions.PyJWTError:

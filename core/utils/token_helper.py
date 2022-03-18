@@ -23,7 +23,11 @@ class TokenHelper:
     @staticmethod
     def decode(token: str) -> Union[dict, NoReturn]:
         try:
-            return jwt.decode(token, config.JWT_SECRET_KEY, config.JWT_ALGORITHM,)
+            return jwt.decode(
+                token,
+                config.JWT_SECRET_KEY,
+                config.JWT_ALGORITHM,
+            )
         except jwt.exceptions.DecodeError:
             raise DecodeTokenException
         except jwt.exceptions.ExpiredSignatureError:

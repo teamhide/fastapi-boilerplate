@@ -1,7 +1,7 @@
 # FastAPI Boilerplate
 
 # Features
-- SQLAlchemy session
+- Async SQLAlchemy session
 - Custom user class
 - Top-level dependency
 - Dependencies for specific permissions
@@ -22,29 +22,18 @@ Just import session and use it.
 
 To guarantee of transaction, session's `autocommit` option is `True`.
 
-So you have to use `Transaction` class.
+So you have to use `Transactional` class.
 
 ```python
-from core.db import Transaction, session
+from core.db import Transactional, session
 
 
-@Transaction()
+@Transactional()
 async def create_user(self):
     session.add(User(email="padocon@naver.com"))
 ```
-Usage as decorator.
-```python
-from core.db import Transaction, session
 
-
-with Transaction():
-    session.add(User(email="padocon@naver.com"))
-```
-Usage as context manager.
-
-In this case, only one transaction is supported.
-
-**Note. Do not use explicit `commit()`. `Transaction` class automatically do.**
+**Note. Do not use explicit `commit()`. `Transactional` class automatically do.**
 
 ### Standalone session
 

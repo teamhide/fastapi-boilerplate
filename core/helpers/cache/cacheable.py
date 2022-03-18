@@ -19,6 +19,7 @@ class Cacheable:
         self.ttl = ttl
         if not key_maker and not self.default_key_maker:
             from core.helpers.cache.custom_key_maker import CustomKeyMaker
+
             self.key_maker = CustomKeyMaker()
         elif self.default_key_maker:
             self.key_maker = self.default_key_maker()
@@ -27,6 +28,7 @@ class Cacheable:
 
         if not backend and not self.default_backend:
             from core.helpers.cache.redis_backend import RedisBackend
+
             self.backend = RedisBackend()
         elif self.default_backend:
             self.backend = self.default_backend()
