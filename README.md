@@ -23,6 +23,23 @@ async def create_user(self):
 
 Do not use explicit `commit()`. `Transactional` class automatically do.
 
+### Standalone session
+
+According to the current settings, the session is set through middleware.
+
+However, it doesn't go through middleware in tests or background tasks.
+
+So you need to use the @create_session decorator.
+
+```python
+from core.db import create_session
+
+
+@create_session
+def test_something():
+    ...
+```
+
 ## Custom user for authentication
 
 ```python

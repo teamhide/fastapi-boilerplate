@@ -1,3 +1,4 @@
+from .create_session import create_session
 from .session import Base, session
 from .transactional import Transactional, Propagation
 
@@ -6,4 +7,5 @@ __all__ = [
     "session",
     "Transactional",
     "Propagation",
+    "create_session",
 ]
