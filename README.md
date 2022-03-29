@@ -40,6 +40,13 @@ def test_something():
     ...
 ```
 
+### Multiple databases
+
+Go to `core/config.py` and edit `WRITER_DB_URL` and `READER_DB_URL` in the config class.
+
+
+If you need additional logic to use the database, refer to the `get_bind()` method of `RoutingClass`.
+
 ## Custom user for authentication
 
 ```python

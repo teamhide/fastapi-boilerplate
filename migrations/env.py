@@ -28,7 +28,7 @@ fileConfig(config.config_file_name)
 # target_metadata = mymodel.Base.metadata
 
 # For auto generate schemas
-from core.config import get_config
+from core.config import config
 from app.models import *
 target_metadata = Base.metadata
 
@@ -49,7 +49,7 @@ def run_migrations_offline():
     """
     url = config.get_main_option("sqlalchemy.url")
     context.configure(
-        url=get_config().DB_URL,
+        url=config.WRITER_DB_URL,
         target_metadata=target_metadata,
         literal_binds=True,
         dialect_opts={"paramstyle": "named"},
@@ -65,7 +65,7 @@ def run_migrations_online():
     and associate a connection with the context.
     """
     connectable = create_engine(
-        get_config().DB_URL,
+        config.WRITER_DB_URL,
         poolclass=pool.NullPool
     )
 
