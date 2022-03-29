@@ -38,8 +38,6 @@ class Transactional:
             except Exception as e:
                 await session.rollback()
                 raise e
-            finally:
-                await session.remove()
 
             return result
 

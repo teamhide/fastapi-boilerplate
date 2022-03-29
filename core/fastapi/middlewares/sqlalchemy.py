@@ -6,7 +6,7 @@ from starlette.middleware.base import (
     RequestResponseEndpoint,
 )
 
-from core.db.session import set_session_context, reset_session_context
+from core.db.session import set_session_context, reset_session_context, session
 
 
 class SQLAlchemyMiddleware(BaseHTTPMiddleware):
@@ -24,6 +24,7 @@ class SQLAlchemyMiddleware(BaseHTTPMiddleware):
         except Exception as e:
             raise e
         finally:
+            await session.remove()
             reset_session_context(context=context)
 
         return response
