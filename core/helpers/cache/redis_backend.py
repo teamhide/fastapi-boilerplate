@@ -17,7 +17,7 @@ class RedisBackend(BaseBackend):
         except UnicodeDecodeError:
             return pickle.loads(result)
 
-    async def save(self, response: Any, key: str, ttl: int = 60) -> None:
+    async def set(self, response: Any, key: str, ttl: int = 60) -> None:
         if isinstance(response, dict):
             response = ujson.dumps(response)
         elif isinstance(response, object):

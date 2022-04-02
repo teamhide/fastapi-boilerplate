@@ -45,7 +45,7 @@ class Cacheable:
                     return cached_response
 
                 response = await function(*args, **kwargs)
-                await self.backend.save(response=response, key=key, ttl=self.ttl)
+                await self.backend.set(response=response, key=key, ttl=self.ttl)
                 return response
             except Exception as e:
                 raise e

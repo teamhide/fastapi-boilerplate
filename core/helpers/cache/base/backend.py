@@ -8,5 +8,5 @@ class BaseBackend(ABC):
         ...
 
     @abstractmethod
-    async def save(self, response: Any, key: str, ttl: int = 60) -> None:
+    async def set(self, response: Any, key: str, ttl: int = 60) -> None:
         ...

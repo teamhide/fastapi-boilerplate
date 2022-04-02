@@ -170,11 +170,11 @@ class RedisBackend(BaseBackend):
     async def get(self, key: str) -> Any:
         ...
 
-    async def save(self, response: Any, key: str) -> None:
+    async def set(self, response: Any, key: str) -> None:
         ...
 ```
 
-If you want to create a custom key, inherit the `BaseBackend` class and implement the `get()` and `save()` method.
+If you want to create a custom key, inherit the `BaseBackend` class and implement the `get()` and `set()` method.
 
 ```python
 @Cacheable(prefix="get_user", ttl=60, backend=RedisBackend)
