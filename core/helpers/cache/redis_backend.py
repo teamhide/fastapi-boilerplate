@@ -24,3 +24,7 @@ class RedisBackend(BaseBackend):
             response = pickle.dumps(response)
 
         await redis.set(name=key, value=response, ex=ttl)
+
+    async def delete_startswith(self, value: str) -> None:
+        async for key in redis.scan_iter(f"{value}::*"):
+            await redis.delete(key)

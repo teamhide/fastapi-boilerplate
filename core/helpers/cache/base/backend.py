@@ -10,3 +10,7 @@ class BaseBackend(ABC):
     @abstractmethod
     async def set(self, response: Any, key: str, ttl: int = 60) -> None:
         ...
+
+    @abstractmethod
+    async def delete_startswith(self, value: str) -> None:
+        ...

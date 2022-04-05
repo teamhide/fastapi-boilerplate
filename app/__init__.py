@@ -12,6 +12,7 @@ from core.fastapi.middlewares import (
     AuthBackend,
     SQLAlchemyMiddleware,
 )
+from core.helpers.cache import Cache, RedisBackend, CustomKeyMaker
 
 
 def init_cors(app: FastAPI) -> None:
@@ -61,6 +62,10 @@ def init_middleware(app: FastAPI) -> None:
     app.add_middleware(SQLAlchemyMiddleware)
 
 
+def init_cache() -> None:
+    Cache.init(backend=RedisBackend(), key_maker=CustomKeyMaker())
+
+
 def create_app() -> FastAPI:
     app = FastAPI(
         title="Hide",
@@ -74,6 +79,7 @@ def create_app() -> FastAPI:
     init_cors(app=app)
     init_listeners(app=app)
     init_middleware(app=app)
+    init_cache()
     return app
 
 

@@ -126,16 +126,27 @@ Refer the README of https://github.com/teamhide/fastapi-event
 
 ## Cache
 
+### Caching by prefix
 ```python
-from core.helpers.cache import Cacheable
+from core.helpers.cache import Cache
 
 
-@Cacheable(prefix="get_user", ttl=60)
+@Cache.cached(prefix="get_user", ttl=60)
 async def get_user():
     ...
 ```
 
-Use the `Cacheable` decorator to cache the return value of a function.
+### Caching by tag
+```python
+from core.helpers.cache import Cache, CacheTag
+
+
+@Cache.cached(tag=CacheTag.GET_USER_LIST, ttl=60)
+async def get_user():
+    ...
+```
+
+Use the `Cache` decorator to cache the return value of a function.
 
 Depending on the argument of the function, caching is stored with a different value through internal processing.
 
@@ -146,19 +157,11 @@ from core.helpers.cache.base import BaseKeyMaker
 
 
 class CustomKeyMaker(BaseKeyMaker):
-    async def make(self, function: Callable) -> str:
+    async def make(self, function: Callable, prefix: str) -> str:
         ...
 ```
 
-If you want to create a custom key, inherit the `BaseKeyMaker` class and implement the `make()` method.
-
-```python
-@Cacheable(prefix="get_user", ttl=60, key_maker=CustomKeyMaker)
-```
-
-And pass your class via `key_maker` arguments.
-
-If no value is given to the `key_maker` argument, the function implemented by default is used.
+If you want to create a custom key, inherit the BaseKeyMaker class and implement the make() method.
 
 ### Custom Backend
 
@@ -170,25 +173,18 @@ class RedisBackend(BaseBackend):
     async def get(self, key: str) -> Any:
         ...
 
-    async def set(self, response: Any, key: str) -> None:
+    async def set(self, response: Any, key: str, ttl: int = 60) -> None:
+        ...
+
+    async def delete_startswith(self, value: str) -> None:
         ...
 ```
 
-If you want to create a custom key, inherit the `BaseBackend` class and implement the `get()` and `set()` method.
+If you want to create a custom key, inherit the BaseBackend class and implement the `get()`, `set()`, `delete_startswith()` method.
+
+Pass your custom backend or keymaker as an argument to init. (`/app/__init__.py`)
 
 ```python
-@Cacheable(prefix="get_user", ttl=60, backend=RedisBackend)
+def init_cache() -> None:
+    Cache.init(backend=RedisBackend(), key_maker=CustomKeyMaker())
 ```
-
-And pass your class via `backend` arguments.
-
-If no value is given to the `backend` argument, the function implemented by default is used.
-
-### Set default backend/keymaker
-
-```python
-Cacheable.init_backend(backend=RedisBackend)
-Cacheable.init_key_maker(backend=CustomKeyMaker)
-```
-
-Add the above line when the server is startup.
