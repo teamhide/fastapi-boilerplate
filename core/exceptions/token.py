@@ -1,14 +1,13 @@
 from core.exceptions import CustomException
-from core.exceptions.error_code import ErrorCode
 
 
 class DecodeTokenException(CustomException):
     code = 400
-    error_code = ErrorCode.Token.DecodeToken
+    error_code = "TOKEN__DECODE_ERROR"
     message = "token decode error"
 
 
 class ExpiredTokenException(CustomException):
     code = 400
-    error_code = ErrorCode.Token.ExpiredToken
+    error_code = "TOKEN__EXPIRE_TOKEN"
     message = "expired token"

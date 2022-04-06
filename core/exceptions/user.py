@@ -1,14 +1,13 @@
 from core.exceptions import CustomException
-from core.exceptions.error_code import ErrorCode
 
 
 class PasswordDoesNotMatchException(CustomException):
     code = 401
-    error_code = ErrorCode.User.PasswordDoesNotMatch
+    error_code = "USER__PASSWORD_DOES_NOT_MATCH"
     message = "password does not match"
 
 
 class DuplicateEmailOrNicknameException(CustomException):
     code = 400
-    error_code = ErrorCode.User.DuplicateEmailOrNickname
+    error_code = "USER__DUPLICATE_EMAIL_OR_NICKNAME"
     message = "duplicate email or nickname"
