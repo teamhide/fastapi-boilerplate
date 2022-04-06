@@ -188,3 +188,13 @@ Pass your custom backend or keymaker as an argument to init. (`/app/__init__.py`
 def init_cache() -> None:
     Cache.init(backend=RedisBackend(), key_maker=CustomKeyMaker())
 ```
+
+### Remove all cache by prefix/tag
+
+```python
+from core.helpers.cache import Cache, CacheTag
+
+
+await Cache.remove_by_prefix(prefix="get_user_list")
+await Cache.remove_by_tag(tag=CacheTag.GET_USER_LIST)
+```
