@@ -71,7 +71,7 @@ If you want to modify custom user class, you have to update below files.
 
 ```python
 class CurrentUser(BaseModel):
-    id: int = None
+    id: int = Field(None, description="ID")
 ```
 
 Simply add more fields based on your needs.
