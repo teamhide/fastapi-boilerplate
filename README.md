@@ -182,7 +182,7 @@ class RedisBackend(BaseBackend):
 
 If you want to create a custom key, inherit the BaseBackend class and implement the `get()`, `set()`, `delete_startswith()` method.
 
-Pass your custom backend or keymaker as an argument to init. (`/app/__init__.py`)
+Pass your custom backend or keymaker as an argument to init. (`/app/server.py`)
 
 ```python
 def init_cache() -> None:

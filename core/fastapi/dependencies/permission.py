@@ -5,7 +5,7 @@ from fastapi import Request
 from fastapi.openapi.models import APIKey, APIKeyIn
 from fastapi.security.base import SecurityBase
 
-from app.services import UserService
+from app.user.services import UserService
 from core.exceptions import CustomException, UnauthorizedException
 
 

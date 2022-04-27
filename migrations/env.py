@@ -29,7 +29,7 @@ fileConfig(config.config_file_name)
 
 # For auto generate schemas
 from core.config import config
-from app.models import *
+from app.user.models import *
 target_metadata = Base.metadata
 
 # other values from the config, defined by the needs of env.py,

@@ -2,7 +2,7 @@ from typing import Optional, List, Union, NoReturn
 
 from sqlalchemy import or_, select
 
-from app.models import User
+from app.user.models import User
 from core.db import Transactional, Propagation, session
 from core.exceptions import (
     PasswordDoesNotMatchException,
