@@ -34,7 +34,7 @@ class UserService:
     @Transactional(propagation=Propagation.REQUIRED)
     async def create_user(
         self, email: str, password1: str, password2: str, nickname: str
-    ) -> Union[User, NoReturn]:
+    ) -> None:
         if password1 != password2:
             raise PasswordDoesNotMatchException
 
@@ -47,8 +47,6 @@ class UserService:
 
         user = User(email=email, password=password1, nickname=nickname)
         session.add(user)
-
-        return user
 
     async def is_admin(self, user_id: int) -> bool:
         result = await session.execute(select(User).where(User.id == user_id))
