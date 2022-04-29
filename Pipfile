@@ -18,6 +18,7 @@ pythondi = "*"
 aioredis = "*"
 ujson = "*"
 aiomysql = "*"
+click = "*"
 
 [requires]
 python_version = "3.8"
