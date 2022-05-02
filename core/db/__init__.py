@@ -1,5 +1,5 @@
-from .create_session import create_session
 from .session import Base, session
+from .standalone_session import standalone_session
 from .transactional import Transactional, Propagation
 
 __all__ = [
@@ -7,5 +7,5 @@ __all__ = [
     "session",
     "Transactional",
     "Propagation",
-    "create_session",
+    "standalone_session",
 ]

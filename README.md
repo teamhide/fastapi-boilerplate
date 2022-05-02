@@ -35,13 +35,13 @@ According to the current settings, the session is set through middleware.
 
 However, it doesn't go through middleware in tests or background tasks.
 
-So you need to use the @create_session decorator.
+So you need to use the `@standalone_session` decorator.
 
 ```python
-from core.db import create_session
+from core.db import standalone_session
 
 
-@create_session
+@standalone_session
 def test_something():
     ...
 ```
