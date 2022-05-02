@@ -26,6 +26,16 @@ services:
       - '3306:3306'
     networks:
       - backend
+  redis:
+    build:
+      context: .
+      dockerfile: docker/redis/Dockerfile
+    container_name: redis
+    hostname: redis
+    ports:
+      - '6379:6379'
+    networks:
+      - backend
 
 networks:
   backend:
