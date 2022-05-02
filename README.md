@@ -10,6 +10,12 @@
 - Event dispatcher
 - Cache
 
+## Run
+
+```python
+python3 main.py --stage local|dev|prod
+```
+
 ## SQLAlchemy for asyncio context
 
 ```python
