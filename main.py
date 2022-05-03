@@ -8,13 +8,19 @@ from core.config import config
 
 @click.command()
 @click.option(
-    "--stage",
+    "--env",
     type=click.Choice(["local", "dev", "prod"], case_sensitive=False),
     default="local",
 )
-def main(stage: str):
-    os.environ["STAGE"] = stage
-
+@click.option(
+    "--debug",
+    type=click.BOOL,
+    is_flag=True,
+    default=False,
+)
+def main(env: str, debug: bool):
+    os.environ["ENV"] = env
+    os.environ["DEBUG"] = str(debug)
     uvicorn.run(
         app="app.server:app",
         host=config.APP_HOST,

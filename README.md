@@ -13,7 +13,7 @@
 ## Run
 
 ```python
-python3 main.py --stage local|dev|prod
+python3 main.py --env local|dev|prod --debug
 ```
 
 ## SQLAlchemy for asyncio context
