@@ -100,7 +100,7 @@ Refer `Logging` class inside of `core/fastapi/dependencies/logging.py`
 
 ## Dependencies for specific permissions
 
-Permissions `IsAdmin` and `IsAuthenticated` have already been implemented.
+Permissions `IsAdmin`, `IsAuthenticated`, `AllowAll` have already been implemented.
  
 ```python
 from core.fastapi.dependencies import (
@@ -125,6 +125,8 @@ async def get_user_list(limit: int = 10, prev: int = None):
 Insert permission through `dependencies` argument.
 
 If you want to make your own permission, inherit `BasePermission` and implement `has_permission()` function.
+
+**Note. In order to use swagger's authorize function, you must put `PermissionDependency` as an argument of `dependencies`.**
 
 ## Event dispatcher
 

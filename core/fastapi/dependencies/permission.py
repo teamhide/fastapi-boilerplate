@@ -46,3 +46,8 @@ class IsAdmin(BasePermission):
             return False
 
         return await UserService().is_admin(user_id=user_id)
+
+
+class AllowAll(BasePermission):
+    async def has_permission(self, request: Request) -> bool:
+        return True
