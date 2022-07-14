@@ -119,7 +119,10 @@ user_router = APIRouter()
     responses={"400": {"model": ExceptionResponseSchema}},
     dependencies=[Depends(PermissionDependency([IsAdmin]))],  # HERE
 )
-async def get_user_list(limit: int = 10, prev: int = None):
+async def get_user_list(
+    limit: int = Query(10, description="Limit"),
+    prev: int = Query(None, description="Prev ID"),
+):
     pass
 ```
 Insert permission through `dependencies` argument.
