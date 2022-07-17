@@ -38,9 +38,8 @@ class UserService:
         if password1 != password2:
             raise PasswordDoesNotMatchException
 
-        result = await session.execute(
-            select(User).where(or_(User.email == email, User.nickname == nickname))
-        )
+        query = select(User).where(or_(User.email == email, User.nickname == nickname))
+        result = await session.execute(query)
         is_exist = result.scalars().first()
         if is_exist:
             raise DuplicateEmailOrNicknameException
