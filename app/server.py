@@ -18,8 +18,8 @@ from core.fastapi.middlewares import (
 from core.helpers.cache import Cache, RedisBackend, CustomKeyMaker
 
 
-def init_cors(app: FastAPI) -> None:
-    app.add_middleware(
+def init_cors(app_: FastAPI) -> None:
+    app_.add_middleware(
         CORSMiddleware,
         allow_origins=["*"],
         allow_credentials=True,
@@ -28,14 +28,14 @@ def init_cors(app: FastAPI) -> None:
     )
 
 
-def init_routers(app: FastAPI) -> None:
-    app.include_router(home_router)
-    app.include_router(router)
+def init_routers(app_: FastAPI) -> None:
+    app_.include_router(home_router)
+    app_.include_router(router)
 
 
-def init_listeners(app: FastAPI) -> None:
+def init_listeners(app_: FastAPI) -> None:
     # Exception handler
-    @app.exception_handler(CustomException)
+    @app_.exception_handler(CustomException)
     async def custom_exception_handler(request: Request, exc: CustomException):
         return JSONResponse(
             status_code=exc.code,
@@ -73,7 +73,7 @@ def init_cache() -> None:
 
 
 def create_app() -> FastAPI:
-    app = FastAPI(
+    app_ = FastAPI(
         title="Hide",
         description="Hide API",
         version="1.0.0",
@@ -82,11 +82,11 @@ def create_app() -> FastAPI:
         dependencies=[Depends(Logging)],
         middleware=make_middleware(),
     )
-    init_routers(app=app)
-    init_cors(app=app)
-    init_listeners(app=app)
+    init_routers(app_=app_)
+    init_cors(app_=app_)
+    init_listeners(app_=app_)
     init_cache()
-    return app
+    return app_
 
 
 app = create_app()
