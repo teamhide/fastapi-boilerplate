@@ -1,4 +1,7 @@
+from typing import List
+
 from fastapi import FastAPI, Request, Depends
+from fastapi.middleware import Middleware
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
@@ -53,13 +56,16 @@ def on_auth_error(request: Request, exc: Exception):
     )
 
 
-def init_middleware(app: FastAPI) -> None:
-    app.add_middleware(
-        AuthenticationMiddleware,
-        backend=AuthBackend(),
-        on_error=on_auth_error,
-    )
-    app.add_middleware(SQLAlchemyMiddleware)
+def make_middleware() -> List[Middleware]:
+    middleware = [
+        Middleware(
+            AuthenticationMiddleware,
+            backend=AuthBackend(),
+            on_error=on_auth_error,
+        ),
+        Middleware(SQLAlchemyMiddleware),
+    ]
+    return middleware
 
 
 def init_cache() -> None:
@@ -74,11 +80,11 @@ def create_app() -> FastAPI:
         docs_url=None if config.ENV == "production" else "/docs",
         redoc_url=None if config.ENV == "production" else "/redoc",
         dependencies=[Depends(Logging)],
+        middleware=make_middleware(),
     )
     init_routers(app=app)
     init_cors(app=app)
     init_listeners(app=app)
-    init_middleware(app=app)
     init_cache()
     return app
 
