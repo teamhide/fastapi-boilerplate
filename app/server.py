@@ -18,16 +18,6 @@ from core.fastapi.middlewares import (
 from core.helpers.cache import Cache, RedisBackend, CustomKeyMaker
 
 
-def init_cors(app_: FastAPI) -> None:
-    app_.add_middleware(
-        CORSMiddleware,
-        allow_origins=["*"],
-        allow_credentials=True,
-        allow_methods=["*"],
-        allow_headers=["*"],
-    )
-
-
 def init_routers(app_: FastAPI) -> None:
     app_.include_router(home_router)
     app_.include_router(router)
@@ -58,6 +48,13 @@ def on_auth_error(request: Request, exc: Exception):
 
 def make_middleware() -> List[Middleware]:
     middleware = [
+        Middleware(
+            CORSMiddleware,
+            allow_origins=["*"],
+            allow_credentials=True,
+            allow_methods=["*"],
+            allow_headers=["*"],
+        ),
         Middleware(
             AuthenticationMiddleware,
             backend=AuthBackend(),
