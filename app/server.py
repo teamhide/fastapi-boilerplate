@@ -80,7 +80,6 @@ def create_app() -> FastAPI:
         middleware=make_middleware(),
     )
     init_routers(app_=app_)
-    init_cors(app_=app_)
     init_listeners(app_=app_)
     init_cache()
     return app_
