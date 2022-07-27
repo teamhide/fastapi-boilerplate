@@ -40,9 +40,9 @@ class ProductionConfig(Config):
 def get_config():
     env = os.getenv("ENV", "local")
     config_type = {
-        "development": DevelopmentConfig(),
+        "dev": DevelopmentConfig(),
         "local": LocalConfig(),
-        "production": ProductionConfig(),
+        "prod": ProductionConfig(),
     }
     return config_type[env]
 
