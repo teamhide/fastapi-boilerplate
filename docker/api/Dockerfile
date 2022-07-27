@@ -3,7 +3,7 @@ MAINTAINER Hide <padocon@naver.com>
 
 COPY . /home
 WORKDIR /home
-ENV ENV=development
+ENV ENV=dev
 RUN pip install pipenv mysqlclient
 RUN pipenv install --system
 ENV DOCKERIZE_VERSION v0.6.1
