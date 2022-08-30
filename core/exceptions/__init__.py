@@ -11,6 +11,7 @@ from .token import DecodeTokenException, ExpiredTokenException
 from .user import (
     PasswordDoesNotMatchException,
     DuplicateEmailOrNicknameException,
+    UserNotFoundException,
 )
 
 
@@ -26,4 +27,5 @@ __all__ = [
     "ExpiredTokenException",
     "PasswordDoesNotMatchException",
     "DuplicateEmailOrNicknameException",
+    "UserNotFoundException",
 ]

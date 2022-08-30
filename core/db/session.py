@@ -42,7 +42,8 @@ class RoutingSession(Session):
 
 
 async_session_factory = sessionmaker(
-    class_=AsyncSession, sync_session_class=RoutingSession,
+    class_=AsyncSession,
+    sync_session_class=RoutingSession,
 )
 session: Union[AsyncSession, async_scoped_session] = async_scoped_session(
     session_factory=async_session_factory,

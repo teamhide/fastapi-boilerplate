@@ -34,7 +34,9 @@ class BaseRepo(Generic[ModelType]):
         await session.delete(model)
 
     async def delete_by_id(
-        self, id: int, synchronize_session: SynchronizeSessionEnum = False,
+        self,
+        id: int,
+        synchronize_session: SynchronizeSessionEnum = False,
     ) -> None:
         query = (
             delete(self.model)

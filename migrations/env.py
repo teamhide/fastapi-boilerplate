@@ -14,8 +14,7 @@ sys.path.append(parent_dir)
 # access to the values within the .ini file in use.
 config = context.config
 fileConfig(config.config_file_name)
-sys.path.insert(0, os.path.dirname(
-    os.path.dirname(os.path.realpath(__file__))))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 
 
 # Interpret the config file for Python logging.
@@ -30,6 +29,7 @@ fileConfig(config.config_file_name)
 # For auto generate schemas
 from core.config import config
 from app.user.models import *
+
 target_metadata = Base.metadata
 
 # other values from the config, defined by the needs of env.py,
@@ -71,10 +71,7 @@ async def run_migrations_online():
     In this scenario we need to create an Engine
     and associate a connection with the context.
     """
-    connectable = create_async_engine(
-        config.WRITER_DB_URL,
-        poolclass=pool.NullPool
-    )
+    connectable = create_async_engine(config.WRITER_DB_URL, poolclass=pool.NullPool)
 
     async with connectable.connect() as connection:
         await connection.run_sync(do_run_migrations)
