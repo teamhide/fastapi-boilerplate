@@ -3,6 +3,7 @@ from typing import Optional, List, NoReturn, Union
 from sqlalchemy import or_, select, and_
 
 from app.user.models import User
+from app.user.schemas.user import LoginResponseSchema
 from core.db import Transactional, Propagation, session
 from core.exceptions import (
     PasswordDoesNotMatchException,
@@ -10,7 +11,6 @@ from core.exceptions import (
     UserNotFoundException,
 )
 from core.utils.token_helper import TokenHelper
-from app.user.schemas.user import LoginResponseDto
 
 
 class UserService:
@@ -63,7 +63,7 @@ class UserService:
 
     async def login(
         self, email: str, password: str
-    ) -> Union[LoginResponseDto, NoReturn]:
+    ) -> Union[LoginResponseSchema, NoReturn]:
         result = await session.execute(
             select(User).where(and_(User.email == email, password == password))
         )
@@ -71,7 +71,7 @@ class UserService:
         if not user:
             raise UserNotFoundException
 
-        response = LoginResponseDto(
+        response = LoginResponseSchema(
             token=TokenHelper.encode(payload={"user_id": user.id}),
             refresh_token=TokenHelper.encode(payload={"sub": "refresh"}),
         )

@@ -2,13 +2,13 @@ from typing import List
 
 from fastapi import APIRouter, Depends, Query
 
+from api.user.v1.request.user import LoginRequest
+from api.user.v1.response.user import LoginResponse
 from app.user.schemas import (
     ExceptionResponseSchema,
     GetUserListResponseSchema,
     CreateUserRequestSchema,
     CreateUserResponseSchema,
-    LoginRequestSchema,
-    LoginResponseSchema,
 )
 from app.user.services import UserService
 from core.fastapi.dependencies import (
@@ -45,9 +45,9 @@ async def create_user(request: CreateUserRequestSchema):
 
 @user_router.post(
     "/login",
-    response_model=LoginResponseSchema,
+    response_model=LoginResponse,
     responses={"404": {"model": ExceptionResponseSchema}},
 )
-async def login(request: LoginRequestSchema):
+async def login(request: LoginRequest):
     token = await UserService().login(email=request.email, password=request.password)
     return {"token": token.token, "refresh_token": token.refresh_token}
