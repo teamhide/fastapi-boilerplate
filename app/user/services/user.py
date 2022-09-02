@@ -1,4 +1,4 @@
-from typing import Optional, List, NoReturn, Union
+from typing import Optional, List
 
 from sqlalchemy import or_, select, and_
 
@@ -61,9 +61,7 @@ class UserService:
 
         return True
 
-    async def login(
-        self, email: str, password: str
-    ) -> Union[LoginResponseSchema, NoReturn]:
+    async def login(self, email: str, password: str) -> LoginResponseSchema:
         result = await session.execute(
             select(User).where(and_(User.email == email, password == password))
         )

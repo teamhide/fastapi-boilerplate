@@ -1,5 +1,4 @@
 from datetime import datetime, timedelta
-from typing import Union, NoReturn
 
 import jwt
 
@@ -21,7 +20,7 @@ class TokenHelper:
         return token
 
     @staticmethod
-    def decode(token: str) -> Union[dict, NoReturn]:
+    def decode(token: str) -> dict:
         try:
             return jwt.decode(
                 token,
@@ -34,7 +33,7 @@ class TokenHelper:
             raise ExpiredTokenException
 
     @staticmethod
-    def decode_expired_token(token: str) -> Union[dict, NoReturn]:
+    def decode_expired_token(token: str) -> dict:
         try:
             return jwt.decode(
                 token,
