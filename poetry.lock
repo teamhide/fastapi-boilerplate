@@ -544,7 +544,7 @@ testing = ["func-timeout", "jaraco.itertools", "pytest (>=6)", "pytest-black (>=
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "3f8831736344c18d9dffdc35c90bedb54ec94d2ffa123b7138878f209d4f0a2c"
+content-hash = "30a6b45cb15955a969c3a3403dfc3033dae23ba1e5c343bd38ebe3e44142b83f"
 
 [metadata.files]
 aiomysql = [
