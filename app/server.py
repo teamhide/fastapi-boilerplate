@@ -4,6 +4,8 @@ from fastapi import FastAPI, Request, Depends
 from fastapi.middleware import Middleware
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from fastapi.exceptions import RequestValidationError
+from fastapi.exception_handlers import request_validation_exception_handler
 
 from api import router
 from api.home.home import home_router
@@ -31,6 +33,10 @@ def init_listeners(app_: FastAPI) -> None:
             status_code=exc.code,
             content={"error_code": exc.error_code, "message": exc.message},
         )
+
+    @app_.exception_handler(RequestValidationError)
+    async def validation_exception_handler(request, exc):
+        return await request_validation_exception_handler(request, exc)
 
 
 def on_auth_error(request: Request, exc: Exception):
