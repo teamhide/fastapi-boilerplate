@@ -1,23 +1,21 @@
-from enum import Enum
 from functools import wraps
+from typing import TypeVar, ParamSpec, Callable, Awaitable, Coroutine, Any
 
 from core.db import session
 
-
-class Propagation(Enum):
-    REQUIRED = "required"
-    REQUIRED_NEW = "required_new"
+T = TypeVar("T")
+P = ParamSpec("P")
 
 
 class Transactional:
-    def __init__(self, propagation: Propagation = Propagation.REQUIRED):
-        self.propagation = propagation
-
-    def __call__(self, function):
-        @wraps(function)
-        async def decorator(*args, **kwargs):
+    def __call__(
+        self,
+        func: Callable[P, Awaitable[T]],
+    ) -> Callable[P, Coroutine[Any, Any, T]]:
+        @wraps(func)
+        async def _transactional(*args: P.args, **kwargs: P.kwargs) -> T:
             try:
-                result = await function(*args, **kwargs)
+                result = await func(*args, **kwargs)
                 await session.commit()
             except Exception as e:
                 await session.rollback()
@@ -25,4 +23,4 @@ class Transactional:
 
             return result
 
-        return decorator
+        return _transactional
