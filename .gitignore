@@ -6,6 +6,10 @@ __pycache__/
 # C extensions
 *.so
 
+# PDM
+.pdm-python
+
+
 # Distribution / packaging
 .Python
 build/
