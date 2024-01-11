@@ -1,12 +1,9 @@
-from typing import List
-
 from fastapi import FastAPI, Request, Depends
 from fastapi.middleware import Middleware
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
-from api import router
-from api.home.home import home_router
+from app.auth.adapter.input.api import router as auth_router
 from core.config import config
 from core.exceptions import CustomException
 from core.fastapi.dependencies import Logging
@@ -17,11 +14,12 @@ from core.fastapi.middlewares import (
     ResponseLogMiddleware,
 )
 from core.helpers.cache import Cache, RedisBackend, CustomKeyMaker
+from app.user.adapter.input.api import router as user_router
 
 
 def init_routers(app_: FastAPI) -> None:
-    app_.include_router(home_router)
-    app_.include_router(router)
+    app_.include_router(user_router)
+    app_.include_router(auth_router)
 
 
 def init_listeners(app_: FastAPI) -> None:
@@ -47,7 +45,7 @@ def on_auth_error(request: Request, exc: Exception):
     )
 
 
-def make_middleware() -> List[Middleware]:
+def make_middleware() -> list[Middleware]:
     middleware = [
         Middleware(
             CORSMiddleware,

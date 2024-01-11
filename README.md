@@ -3,7 +3,6 @@
 # Features
 - Async SQLAlchemy session
 - Custom user class
-- Top-level dependency
 - Dependencies for specific permissions
 - Celery
 - Dockerize(Hot reload)
@@ -13,7 +12,15 @@
 ## Run
 
 ```python
+poetry shell
+poetry install
 python3 main.py --env local|dev|prod --debug
+```
+
+## Formatting
+
+```python
+pre-commit
 ```
 
 ## SQLAlchemy for asyncio context
@@ -96,12 +103,12 @@ After line 18, assign values that you added on `CurrentUser`.
 
 Set a callable function when initialize FastAPI() app through `dependencies` argument.
 
-Refer `Logging` class inside of `core/fastapi/dependencies/logging.py` 
+Refer `Logging` class inside of `core/fastapi/dependencies/logging.py`
 
 ## Dependencies for specific permissions
 
 Permissions `IsAdmin`, `IsAuthenticated`, `AllowAll` have already been implemented.
- 
+
 ```python
 from core.fastapi.dependencies import (
     PermissionDependency,

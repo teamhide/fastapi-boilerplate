@@ -1,14 +1,14 @@
 from contextvars import ContextVar, Token
-from typing import Union
 
 from sqlalchemy.ext.asyncio import (
     AsyncSession,
-    create_async_engine,
     async_scoped_session,
+    async_sessionmaker,
+    create_async_engine,
 )
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker, Session
-from sqlalchemy.sql.expression import Update, Delete, Insert
+from sqlalchemy.orm import Session
+from sqlalchemy.sql.expression import Delete, Insert, Update
 
 from core.config import config
 
@@ -41,11 +41,11 @@ class RoutingSession(Session):
             return engines["reader"].sync_engine
 
 
-async_session_factory = sessionmaker(
+async_session_factory = async_sessionmaker(
     class_=AsyncSession,
     sync_session_class=RoutingSession,
 )
-session: Union[AsyncSession, async_scoped_session] = async_scoped_session(
+session = async_scoped_session(
     session_factory=async_session_factory,
     scopefunc=get_session_context,
 )

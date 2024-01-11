@@ -1,4 +1,4 @@
-from typing import TypeVar, Type, Optional, Generic
+from typing import TypeVar, Type, Generic
 
 from sqlalchemy import select, update, delete
 
@@ -12,7 +12,7 @@ class BaseRepo(Generic[ModelType]):
     def __init__(self, model: Type[ModelType]):
         self.model = model
 
-    async def get_by_id(self, id: int) -> Optional[ModelType]:
+    async def get_by_id(self, id: int) -> ModelType | None:
         query = select(self.model).where(self.model.id == id)
         return await session.execute(query).scalars().first()
 

@@ -1,6 +1,5 @@
-from typing import Optional, Tuple
-
 import jwt
+from pydantic import BaseModel, Field
 from starlette.authentication import AuthenticationBackend
 from starlette.middleware.authentication import (
     AuthenticationMiddleware as BaseAuthenticationMiddleware,
@@ -8,13 +7,19 @@ from starlette.middleware.authentication import (
 from starlette.requests import HTTPConnection
 
 from core.config import config
-from ..schemas import CurrentUser
+
+
+class CurrentUser(BaseModel):
+    id: int = Field(None, description="ID")
+
+    class Config:
+        validate_assignment = True
 
 
 class AuthBackend(AuthenticationBackend):
     async def authenticate(
         self, conn: HTTPConnection
-    ) -> Tuple[bool, Optional[CurrentUser]]:
+    ) -> tuple[bool, CurrentUser | None]:
         current_user = CurrentUser()
         authorization: str = conn.headers.get("Authorization")
         if not authorization:

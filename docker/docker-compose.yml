@@ -1,0 +1,28 @@
+version: "3.8"
+services:
+  mysql:
+    image: mysql:8.0.33
+    container_name: fastapi-mysql
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_USER: fastapi
+      MYSQL_PASSWORD: fastapi
+      MYSQL_DATABASE: fastapi
+      MYSQL_ROOT_PASSWORD: fastapi
+      TZ: "Asia/Seoul"
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - mysqldb:/var/lib/mysql
+
+  redis:
+    image: redis:6.2.6
+    container_name: fastapi-redis
+    command: redis-server --port 6379
+    restart: always
+    ports:
+      - "6379:6379"
+
+volumes:
+  mysqldb:
