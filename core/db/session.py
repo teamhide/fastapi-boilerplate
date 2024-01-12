@@ -7,7 +7,7 @@ from sqlalchemy.ext.asyncio import (
     async_sessionmaker,
     create_async_engine,
 )
-from sqlalchemy.orm import Session, declarative_base
+from sqlalchemy.orm import Session, DeclarativeBase
 from sqlalchemy.sql.expression import Delete, Insert, Update
 
 from core.config import config
@@ -54,4 +54,7 @@ session = async_scoped_session(
     session_factory=async_session_factory,
     scopefunc=get_session_context,
 )
-Base = declarative_base()
+
+
+class Base(DeclarativeBase):
+    ...

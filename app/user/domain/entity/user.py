@@ -1,4 +1,5 @@
-from sqlalchemy import Column, Unicode, BigInteger, Boolean
+from sqlalchemy import String
+from sqlalchemy.orm import Mapped, mapped_column
 
 from core.db import Base
 from core.db.mixins import TimestampMixin
@@ -7,11 +8,11 @@ from core.db.mixins import TimestampMixin
 class User(Base, TimestampMixin):
     __tablename__ = "users"
 
-    id = Column(BigInteger, primary_key=True, autoincrement=True)
-    password = Column(Unicode(255), nullable=False)
-    email = Column(Unicode(255), nullable=False, unique=True)
-    nickname = Column(Unicode(255), nullable=False, unique=True)
-    is_admin = Column(Boolean, default=False)
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    password: Mapped[str] = mapped_column(String(255), nullable=False)
+    email: Mapped[str] = mapped_column(String(255), nullable=False, unique=True)
+    nickname: Mapped[str] = mapped_column(String(255), nullable=False, unique=True)
+    is_admin: Mapped[bool] = mapped_column(default=False)
 
     @classmethod
     def create(cls, *, email: str, password: str, nickname: str) -> "User":
