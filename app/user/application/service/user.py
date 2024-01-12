@@ -7,8 +7,10 @@ from app.user.application.exception import (
     DuplicateEmailOrNicknameException,
     UserNotFoundException,
 )
+from app.user.domain.command import CreateUserCommand
 from app.user.domain.entity.user import UserRead, User
 from app.user.domain.usecase.user import UserUseCase
+from app.user.domain.vo.location import Location
 from core.db import Transactional
 from core.helpers.token import TokenHelper
 
@@ -26,20 +28,23 @@ class UserService(UserUseCase):
         return await self.repository.get_users(limit=limit, prev=prev)
 
     @Transactional()
-    async def create_user(
-        self, *, email: str, password1: str, password2: str, nickname: str
-    ) -> None:
-        if password1 != password2:
+    async def create_user(self, *, command: CreateUserCommand) -> None:
+        if command.password1 != command.password2:
             raise PasswordDoesNotMatchException
 
         is_exist = await self.repository.get_user_by_email_or_nickname(
-            email=email,
-            nickname=nickname,
+            email=command.email,
+            nickname=command.nickname,
         )
         if is_exist:
             raise DuplicateEmailOrNicknameException
 
-        user = User.create(email=email, password=password1, nickname=nickname)
+        user = User.create(
+            email=command.email,
+            password=command.password1,
+            nickname=command.nickname,
+            location=Location(lat=command.lat, lng=command.lng),
+        )
         await self.repository.save(user=user)
 
     async def is_admin(self, *, user_id: int) -> bool:

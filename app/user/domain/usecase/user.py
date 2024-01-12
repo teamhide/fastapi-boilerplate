@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from app.user.application.dto import LoginResponseDTO
 from app.user.domain.entity.user import User
+from app.user.domain.command import CreateUserCommand
 
 
 class UserUseCase(ABC):
@@ -14,9 +15,7 @@ class UserUseCase(ABC):
         """Get user list"""
 
     @abstractmethod
-    async def create_user(
-        self, *, email: str, password1: str, password2: str, nickname: str
-    ) -> None:
+    async def create_user(self, *, command: CreateUserCommand) -> None:
         """Create User"""
 
     @abstractmethod

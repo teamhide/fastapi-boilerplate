@@ -4,11 +4,12 @@ from core.fastapi.dependencies import (
     PermissionDependency,
     IsAdmin,
 )
-from app.user.adapter.input.api.v1.request import LoginRequest, CreateUserRequestDTO
+from app.user.adapter.input.api.v1.request import LoginRequest, CreateUserRequest
 from app.user.adapter.input.api.v1.response import LoginResponse
 from app.user.application.dto import CreateUserResponseDTO
 from app.user.application.dto import GetUserListResponseDTO
 from app.user.application.service.user import UserService
+from app.user.domain.command import CreateUserCommand
 
 user_router = APIRouter()
 
@@ -30,8 +31,9 @@ async def get_user_list(
     "",
     response_model=CreateUserResponseDTO,
 )
-async def create_user(request: CreateUserRequestDTO):
-    await UserService().create_user(**request.dict())
+async def create_user(request: CreateUserRequest):
+    command = CreateUserCommand(**request.model_dump())
+    await UserService().create_user(command=command)
     return {"email": request.email, "nickname": request.nickname}
 
 
