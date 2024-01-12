@@ -4,9 +4,16 @@ from typing import Type
 from fastapi import Request
 from fastapi.openapi.models import APIKey, APIKeyIn
 from fastapi.security.base import SecurityBase
+from starlette import status
 
 from app.user.application.service.user import UserService
-from core.exceptions import CustomException, UnauthorizedException
+from core.exceptions import CustomException
+
+
+class UnauthorizedException(CustomException):
+    code = status.HTTP_401_UNAUTHORIZED
+    error_code = "UNAUTHORIZED"
+    message = ""
 
 
 class BasePermission(ABC):

@@ -12,9 +12,6 @@ from core.config import config
 class CurrentUser(BaseModel):
     id: int = Field(None, description="ID")
 
-    class Config:
-        validate_assignment = True
-
 
 class AuthBackend(AuthenticationBackend):
     async def authenticate(

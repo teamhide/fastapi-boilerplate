@@ -1,15 +1,14 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 from starlette.datastructures import Headers
 from starlette.types import ASGIApp, Message, Receive, Scope, Send
 
 
 class ResponseInfo(BaseModel):
+    model_config = ConfigDict(arbitrary_types_allowed=True)
+
     headers: Headers | None = Field(default=None, title="Response header")
     body: str = Field(default="", title="응답 바디")
     status_code: int | None = Field(default=None, title="Status code")
-
-    class Config:
-        arbitrary_types_allowed = True
 
 
 class ResponseLogMiddleware:

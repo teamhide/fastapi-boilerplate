@@ -6,9 +6,6 @@ class GetUserListResponseDTO(BaseModel):
     email: str = Field(..., description="Email")
     nickname: str = Field(..., description="Nickname")
 
-    class Config:
-        orm_mode = True
-
 
 class CreateUserRequestDTO(BaseModel):
     email: str = Field(..., description="Email")
@@ -20,9 +17,6 @@ class CreateUserRequestDTO(BaseModel):
 class CreateUserResponseDTO(BaseModel):
     email: str = Field(..., description="Email")
     nickname: str = Field(..., description="Nickname")
-
-    class Config:
-        orm_mode = True
 
 
 class LoginResponseDTO(BaseModel):
