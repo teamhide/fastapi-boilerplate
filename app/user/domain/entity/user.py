@@ -1,3 +1,4 @@
+from pydantic import BaseModel, Field, ConfigDict
 from sqlalchemy import String
 from sqlalchemy.orm import Mapped, mapped_column
 
@@ -17,3 +18,11 @@ class User(Base, TimestampMixin):
     @classmethod
     def create(cls, *, email: str, password: str, nickname: str) -> "User":
         return cls(email=email, password=password, nickname=nickname, is_admin=False)
+
+
+class UserRead(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int = Field(..., title="USER ID")
+    email: str = Field(..., title="Email")
+    nickname: str = Field(..., title="Nickname")

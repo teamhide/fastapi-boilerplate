@@ -7,7 +7,7 @@ from app.user.application.exception import (
     DuplicateEmailOrNicknameException,
     UserNotFoundException,
 )
-from app.user.domain.entity.user import User
+from app.user.domain.entity.user import UserRead, User
 from app.user.domain.usecase.user import UserUseCase
 from core.db import Transactional
 from core.helpers.token import TokenHelper
@@ -22,7 +22,7 @@ class UserService(UserUseCase):
         *,
         limit: int = 12,
         prev: int | None = None,
-    ) -> list[User]:
+    ) -> list[UserRead]:
         return await self.repository.get_users(limit=limit, prev=prev)
 
     @Transactional()
