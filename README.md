@@ -36,23 +36,6 @@ async def create_user(self):
 
 Do not use explicit `commit()`. `Transactional` class automatically do.
 
-### Standalone session
-
-According to the current settings, the session is set through middleware.
-
-However, it doesn't go through middleware in tests or background tasks.
-
-So you need to use the `@standalone_session` decorator.
-
-```python
-from core.db import standalone_session
-
-
-@standalone_session
-def test_something():
-    ...
-```
-
 ### Multiple databases
 
 Go to `core/config.py` and edit `WRITER_DB_URL` and `READER_DB_URL` in the config class.
