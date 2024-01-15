@@ -3,7 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.user.adapter.output.persistence.sqlalchemy.user import UserSQLAlchemyRepo
 from app.user.domain.entity.user import User
-from app.user.domain.vo.location import Location
+from tests.support.user_fixture import make_user
 
 user_repo = UserSQLAlchemyRepo()
 
@@ -11,19 +11,21 @@ user_repo = UserSQLAlchemyRepo()
 @pytest.mark.asyncio
 async def test_get_users(session: AsyncSession):
     # Given
-    user_1 = User(
+    user_1 = make_user(
         password="password",
         email="a@b.c",
         nickname="hide",
         is_admin=True,
-        location=Location(lat=37.123, lng=127.123),
+        lat=37.123,
+        lng=127.123,
     )
-    user_2 = User(
+    user_2 = make_user(
         password="password2",
         email="b@b.c",
         nickname="test",
         is_admin=False,
-        location=Location(lat=37.123, lng=127.123),
+        lat=37.123,
+        lng=127.123,
     )
     session.add_all([user_1, user_2])
     await session.commit()
@@ -55,12 +57,13 @@ async def test_get_user_by_email_or_nickname(session: AsyncSession):
     # Given
     email = "a@b.c"
     nickname = "hide"
-    user = User(
+    user = make_user(
         password="password2",
         email=email,
         nickname=nickname,
         is_admin=False,
-        location=Location(lat=37.123, lng=127.123),
+        lat=37.123,
+        lng=127.123,
     )
     session.add(user)
     await session.commit()
@@ -92,12 +95,13 @@ async def test_get_user_by_email_and_password(session: AsyncSession):
     # Given
     email = "b@c.d"
     password = "hide"
-    user = User(
+    user = make_user(
         password=password,
         email=email,
         nickname="hide",
         is_admin=False,
-        location=Location(lat=37.123, lng=127.123),
+        lat=37.123,
+        lng=127.123,
     )
     session.add(user)
     await session.commit()
@@ -117,12 +121,13 @@ async def test_save(session: AsyncSession):
     # Given
     email = "b@c.d"
     password = "hide"
-    user = User(
+    user = make_user(
         password=password,
         email=email,
         nickname="hide",
         is_admin=False,
-        location=Location(lat=37.123, lng=127.123),
+        lat=37.123,
+        lng=127.123,
     )
 
     # When, Then

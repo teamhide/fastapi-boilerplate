@@ -4,9 +4,8 @@ import pytest
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.user.adapter.output.persistence.repository_adapter import UserRepositoryAdapter
-from app.user.domain.entity.user import User
 from app.user.domain.repository.user import UserRepo
-from app.user.domain.vo.location import Location
+from tests.support.user_fixture import make_user
 
 repository_adapter = UserRepositoryAdapter()
 
@@ -17,13 +16,14 @@ async def test_get_users(session: AsyncSession):
     limit = 1
     prev = 1
     user_repo_mock = AsyncMock(spec=UserRepo)
-    user = User(
+    user = make_user(
         id=1,
         password="password",
         email="a@b.c",
         nickname="hide",
         is_admin=True,
-        location=Location(lat=37.123, lng=127.123),
+        lat=37.123,
+        lng=127.123,
     )
     user_repo_mock.get_users.return_value = [user]
     repository_adapter.user_repo = user_repo_mock
@@ -46,13 +46,14 @@ async def test_get_users(session: AsyncSession):
 async def test_get_user_by_email_or_nickname(session: AsyncSession):
     # Given
     user_repo_mock = AsyncMock(spec=UserRepo)
-    user = User(
+    user = make_user(
         id=1,
         password="password",
         email="a@b.c",
         nickname="hide",
         is_admin=True,
-        location=Location(lat=37.123, lng=127.123),
+        lat=37.123,
+        lng=127.123,
     )
     user_repo_mock.get_user_by_email_or_nickname.return_value = user
     repository_adapter.user_repo = user_repo_mock
@@ -82,13 +83,14 @@ async def test_get_user_by_email_or_nickname(session: AsyncSession):
 async def test_get_user_by_id(session: AsyncSession):
     # Given
     user_repo_mock = AsyncMock(spec=UserRepo)
-    user = User(
+    user = make_user(
         id=1,
         password="password",
         email="a@b.c",
         nickname="hide",
         is_admin=True,
-        location=Location(lat=37.123, lng=127.123),
+        lat=37.123,
+        lng=127.123,
     )
     user_repo_mock.get_user_by_id.return_value = user
     repository_adapter.user_repo = user_repo_mock
@@ -114,13 +116,14 @@ async def test_get_user_by_id(session: AsyncSession):
 async def test_get_user_by_email_and_password(session: AsyncSession):
     # Given
     user_repo_mock = AsyncMock(spec=UserRepo)
-    user = User(
+    user = make_user(
         id=1,
         password="password",
         email="a@b.c",
         nickname="hide",
         is_admin=True,
-        location=Location(lat=37.123, lng=127.123),
+        lat=37.123,
+        lng=127.123,
     )
     user_repo_mock.get_user_by_email_and_password.return_value = user
     repository_adapter.user_repo = user_repo_mock
@@ -149,13 +152,14 @@ async def test_get_user_by_email_and_password(session: AsyncSession):
 async def test_save(session: AsyncSession):
     # Given
     user_repo_mock = AsyncMock(spec=UserRepo)
-    user = User(
+    user = make_user(
         id=1,
         password="password",
         email="a@b.c",
         nickname="hide",
         is_admin=True,
-        location=Location(lat=37.123, lng=127.123),
+        lat=37.123,
+        lng=127.123,
     )
     user_repo_mock.save.return_value = None
     repository_adapter.user_repo = user_repo_mock

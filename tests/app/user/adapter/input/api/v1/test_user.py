@@ -9,9 +9,8 @@ from app.user.application.exception import (
     DuplicateEmailOrNicknameException,
     UserNotFoundException,
 )
-from app.user.domain.entity.user import User
-from app.user.domain.vo.location import Location
 from tests.support.token import USER_ID_1_TOKEN
+from tests.support.user_fixture import make_user
 
 HEADERS = {"Authorization": f"Bearer {USER_ID_1_TOKEN}"}
 BASE_URL = "http://test"
@@ -20,13 +19,14 @@ BASE_URL = "http://test"
 @pytest.mark.asyncio
 async def test_get_users(session: AsyncSession):
     # Given
-    user = User(
+    user = make_user(
         id=1,
         password="password",
         email="a@b.c",
         nickname="hide",
         is_admin=True,
-        location=Location(lat=37.123, lng=127.123),
+        lat=37.123,
+        lng=127.123,
     )
     session.add(user)
     await session.commit()
@@ -68,12 +68,14 @@ async def test_create_user_password_does_not_match(session: AsyncSession):
 @pytest.mark.asyncio
 async def test_create_user_duplicated_user(session: AsyncSession):
     # Given
-    user = User(
+    user = make_user(
+        id=1,
         password="password",
         email="a@b.c",
         nickname="hide",
         is_admin=True,
-        location=Location(lat=37.123, lng=127.123),
+        lat=37.123,
+        lng=127.123,
     )
     session.add(user)
     await session.commit()
@@ -151,12 +153,14 @@ async def test_login(session: AsyncSession):
     # Given
     email = "h@id.e"
     password = "password"
-    user = User(
+    user = make_user(
+        id=1,
         password=password,
         email=email,
         nickname="hide",
         is_admin=True,
-        location=Location(lat=37.123, lng=127.123),
+        lat=37.123,
+        lng=127.123,
     )
     session.add(user)
     await session.commit()
