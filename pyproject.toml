@@ -30,7 +30,7 @@ dependency-injector = "^4.41.0"
 pytest = "^7.4.4"
 
 [tool.coverage.run]
-omit=["tests/*", "test_*.py"]
+omit=["tests/*", "test_*.py", "migrations/*"]
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
