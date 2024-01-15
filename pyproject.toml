@@ -5,7 +5,7 @@ description = "FastAPI Boilerplate"
 authors = ["Hide <padocon@naver.com>"]
 
 [tool.poetry.dependencies]
-python = "3.12.1"
+python = "3.11.7"
 alembic = "^1.13.1"
 uvicorn = "^0.25.0"
 fastapi = "^0.109.0"
@@ -24,6 +24,7 @@ cryptography = "^41.0.7"
 coverage = "^7.4.0"
 sqlalchemy = {extras = ["asyncio"], version = "^2.0.25"}
 pymysql = "^1.1.0"
+dependency-injector = "^4.41.0"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.4.4"

@@ -29,7 +29,7 @@ async def test_get_users(session: AsyncSession):
     await session.commit()
 
     # When
-    sut = await user_repo.get_users(limit=12, prev=12)
+    sut = await user_repo.get_users(limit=15, prev=12)
 
     # Then
     assert len(sut) == 2
@@ -48,3 +48,82 @@ async def test_get_users(session: AsyncSession):
     assert saved_user_2.is_admin == user_2.is_admin
     assert saved_user_2.location.lat == user_2.location.lat
     assert saved_user_2.location.lng == user_2.location.lng
+
+
+@pytest.mark.asyncio
+async def test_get_user_by_email_or_nickname(session: AsyncSession):
+    # Given
+    email = "a@b.c"
+    nickname = "hide"
+    user = User(
+        password="password2",
+        email=email,
+        nickname=nickname,
+        is_admin=False,
+        location=Location(lat=37.123, lng=127.123),
+    )
+    session.add(user)
+    await session.commit()
+
+    # When
+    sut = await user_repo.get_user_by_email_or_nickname(email=email, nickname=nickname)
+
+    # Then
+    assert isinstance(sut, User)
+    assert sut.id == user.id
+    assert sut.email == email
+    assert sut.nickname == nickname
+
+
+@pytest.mark.asyncio
+async def test_get_user_by_id(session: AsyncSession):
+    # Given
+    user_id = 1
+
+    # When
+    sut = await user_repo.get_user_by_id(user_id=user_id)
+
+    # Then
+    assert sut is None
+
+
+@pytest.mark.asyncio
+async def test_get_user_by_email_and_password(session: AsyncSession):
+    # Given
+    email = "b@c.d"
+    password = "hide"
+    user = User(
+        password=password,
+        email=email,
+        nickname="hide",
+        is_admin=False,
+        location=Location(lat=37.123, lng=127.123),
+    )
+    session.add(user)
+    await session.commit()
+
+    # When
+    sut = await user_repo.get_user_by_email_and_password(email=email, password=password)
+
+    # Then
+    assert isinstance(sut, User)
+    assert sut.id == user.id
+    assert sut.email == email
+    assert sut.password == password
+
+
+@pytest.mark.asyncio
+async def test_save(session: AsyncSession):
+    # Given
+    email = "b@c.d"
+    password = "hide"
+    user = User(
+        password=password,
+        email=email,
+        nickname="hide",
+        is_admin=False,
+        location=Location(lat=37.123, lng=127.123),
+    )
+
+    # When, Then
+    await user_repo.save(user=user)
