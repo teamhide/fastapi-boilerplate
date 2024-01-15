@@ -1,5 +1,4 @@
 from functools import wraps
-from typing import Type
 
 from .base import BaseBackend, BaseKeyMaker
 from .cache_tag import CacheTag
@@ -10,11 +9,17 @@ class CacheManager:
         self.backend = None
         self.key_maker = None
 
-    def init(self, backend: Type[BaseBackend], key_maker: Type[BaseKeyMaker]) -> None:
+    def init(self, *, backend: BaseBackend, key_maker: BaseKeyMaker) -> None:
         self.backend = backend
         self.key_maker = key_maker
 
-    def cached(self, prefix: str = None, tag: CacheTag = None, ttl: int = 60):
+    def cached(
+        self,
+        *,
+        prefix: str | None = None,
+        tag: CacheTag | None = None,
+        ttl: int = 60,
+    ):
         def _cached(function):
             @wraps(function)
             async def __cached(*args, **kwargs):
@@ -37,10 +42,10 @@ class CacheManager:
 
         return _cached
 
-    async def remove_by_tag(self, tag: CacheTag) -> None:
+    async def remove_by_tag(self, *, tag: CacheTag) -> None:
         await self.backend.delete_startswith(value=tag.value)
 
-    async def remove_by_prefix(self, prefix: str) -> None:
+    async def remove_by_prefix(self, *, prefix: str) -> None:
         await self.backend.delete_startswith(value=prefix)
 
 

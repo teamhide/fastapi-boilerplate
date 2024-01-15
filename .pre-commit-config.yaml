@@ -26,6 +26,11 @@ repos:
     hooks:
       - id: mypy
         exclude: migrations/
+        additional_dependencies:
+            [
+                "types-redis==4.6.0",
+                "types-ujson==5.9.0",
+            ]
 ci:
     autofix_commit_msg: 🎨 [pre-commit.ci] Auto format from pre-commit.com hooks
     autoupdate_commit_msg: ⬆ [pre-commit.ci] pre-commit autoupdate

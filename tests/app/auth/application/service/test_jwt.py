@@ -1,6 +1,7 @@
 import pytest
 
 from app.auth.application.service.jwt import JwtService, DecodeTokenException
+from tests.support.token import INVALID_REFRESH_TOKEN, USER_ID_1_TOKEN
 
 jwt_service = JwtService()
 
@@ -15,7 +16,7 @@ async def test_verify_token():
 @pytest.mark.asyncio
 async def test_create_refresh_token_invalid_refresh_token():
     # Given
-    token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhIjoxfQ.VF_eJEtfxZ9PEOqWunr26x0jF2n0o2dyKpmMwisIISY"
+    token = INVALID_REFRESH_TOKEN
 
     # When, Then
     with pytest.raises(DecodeTokenException):
@@ -25,7 +26,7 @@ async def test_create_refresh_token_invalid_refresh_token():
 @pytest.mark.asyncio
 async def test_create_refresh_token():
     # Given
-    token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJyZWZyZXNoIiwidXNlcl9pZCI6MX0.p3PLbILjOq4-i2OmkH2uARu6UQun01dxPArSribeQ8w"
+    token = USER_ID_1_TOKEN
 
     # When
     sut = await jwt_service.create_refresh_token(token=token, refresh_token=token)

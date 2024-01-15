@@ -8,7 +8,7 @@ from core.helpers.redis import redis
 
 
 class RedisBackend(BaseBackend):
-    async def get(self, key: str) -> Any:
+    async def get(self, *, key: str) -> Any:
         result = await redis.get(key)
         if not result:
             return
@@ -18,7 +18,7 @@ class RedisBackend(BaseBackend):
         except UnicodeDecodeError:
             return pickle.loads(result)
 
-    async def set(self, response: Any, key: str, ttl: int = 60) -> None:
+    async def set(self, *, response: Any, key: str, ttl: int = 60) -> None:
         if isinstance(response, dict):
             response = ujson.dumps(response)
         elif isinstance(response, object):
@@ -26,6 +26,6 @@ class RedisBackend(BaseBackend):
 
         await redis.set(name=key, value=response, ex=ttl)
 
-    async def delete_startswith(self, value: str) -> None:
+    async def delete_startswith(self, *, value: str) -> None:
         async for key in redis.scan_iter(f"{value}::*"):
             await redis.delete(key)
