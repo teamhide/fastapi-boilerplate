@@ -49,6 +49,7 @@ class RoutingSession(Session):
 async_session_factory = async_sessionmaker(
     class_=AsyncSession,
     sync_session_class=RoutingSession,
+    expire_on_commit=False,
 )
 session = async_scoped_session(
     session_factory=async_session_factory,

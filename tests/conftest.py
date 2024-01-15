@@ -1,8 +1,13 @@
 from uuid import uuid4
 
 import pytest
+import pytest_asyncio
 
-from core.db.session import set_session_context, reset_session_context
+from core.db.session import (
+    set_session_context,
+    reset_session_context,
+    session as db_session,
+)
 from tests.support.test_db_coordinator import TestDbCoordinator
 
 test_db_coordinator = TestDbCoordinator()
@@ -16,8 +21,9 @@ def session_context():
     reset_session_context(context=context)
 
 
-@pytest.fixture
-def db():
+@pytest_asyncio.fixture
+async def session():
     test_db_coordinator.apply_alembic()
-    yield
+    yield db_session
+    await db_session.remove()
     test_db_coordinator.truncate_all()

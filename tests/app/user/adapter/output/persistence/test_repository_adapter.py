@@ -6,5 +6,5 @@ repository_adapter = UserRepositoryAdapter()
 
 
 @pytest.mark.asyncio
-async def test_get_users(db):
+async def test_get_users():
     pass

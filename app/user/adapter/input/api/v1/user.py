@@ -17,7 +17,6 @@ user_router = APIRouter()
 @user_router.get(
     "",
     response_model=list[GetUserListResponseDTO],
-    response_model_exclude={"id"},
     dependencies=[Depends(PermissionDependency([IsAdmin]))],
 )
 async def get_user_list(

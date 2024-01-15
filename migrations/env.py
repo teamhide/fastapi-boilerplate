@@ -1,11 +1,9 @@
-import asyncio
 import os
 import sys
 from logging.config import fileConfig
 
 from alembic import context
-from sqlalchemy import pool
-from sqlalchemy.ext.asyncio import create_async_engine
+from sqlalchemy import pool, create_engine
 
 parent_dir = os.path.abspath(os.path.join(os.getcwd(), ".."))
 sys.path.append(parent_dir)
@@ -28,7 +26,6 @@ fileConfig(config.config_file_name)
 
 # For auto generate schemas
 from core.config import config
-from app.user.domain.entity import *
 from core.db import Base
 
 target_metadata = Base.metadata
@@ -67,20 +64,25 @@ def do_run_migrations(connection):
         context.run_migrations()
 
 
-async def run_migrations_online():
+def run_migrations_online():
     """Run migrations input 'online' mode.
     In this scenario we need to create an Engine
     and associate a connection with the context.
     """
-    connectable = create_async_engine(config.WRITER_DB_URL, poolclass=pool.NullPool)
+    connectable = create_engine(
+        config.WRITER_DB_URL.replace("aiomysql", "pymysql"),
+        poolclass=pool.NullPool,
+    )
 
-    async with connectable.connect() as connection:
-        await connection.run_sync(do_run_migrations)
+    with connectable.connect() as connection:
+        context.configure(connection=connection, target_metadata=target_metadata)
+        with context.begin_transaction():
+            context.run_migrations()
 
-    await connectable.dispose()
+    connectable.dispose()
 
 
 if context.is_offline_mode():
     run_migrations_offline()
 else:
-    asyncio.run(run_migrations_online())
+    run_migrations_online()
