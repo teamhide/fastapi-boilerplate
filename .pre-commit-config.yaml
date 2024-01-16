@@ -28,6 +28,7 @@ repos:
         exclude: migrations/
         additional_dependencies:
             [
+                "redis==4.5.1",
                 "types-redis==4.6.0",
                 "types-ujson==5.9.0",
             ]

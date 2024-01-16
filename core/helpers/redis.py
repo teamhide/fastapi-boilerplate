@@ -1,5 +1,5 @@
-import redis.asyncio as aioredis
+from redis import asyncio as redis
 
 from core.config import config
 
-redis = aioredis.from_url(url=f"redis://{config.REDIS_HOST}")
+redis_client = redis.from_url(url=f"redis://{config.REDIS_HOST}", decode_responses=True)

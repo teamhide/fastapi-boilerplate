@@ -21,7 +21,7 @@ class BasePermission(ABC):
 
     @abstractmethod
     async def has_permission(self, request: Request) -> bool:
-        pass
+        """has permssion"""
 
 
 class IsAuthenticated(BasePermission):
