@@ -7,7 +7,8 @@ from app.user.adapter.output.persistence.repository_adapter import UserRepositor
 from app.user.domain.repository.user import UserRepo
 from tests.support.user_fixture import make_user
 
-repository_adapter = UserRepositoryAdapter()
+user_repo_mock = AsyncMock(spec=UserRepo)
+repository_adapter = UserRepositoryAdapter(user_repo=user_repo_mock)
 
 
 @pytest.mark.asyncio
@@ -15,7 +16,6 @@ async def test_get_users(session: AsyncSession):
     # Given
     limit = 1
     prev = 1
-    user_repo_mock = AsyncMock(spec=UserRepo)
     user = make_user(
         id=1,
         password="password",
@@ -45,7 +45,6 @@ async def test_get_users(session: AsyncSession):
 @pytest.mark.asyncio
 async def test_get_user_by_email_or_nickname(session: AsyncSession):
     # Given
-    user_repo_mock = AsyncMock(spec=UserRepo)
     user = make_user(
         id=1,
         password="password",
@@ -82,7 +81,6 @@ async def test_get_user_by_email_or_nickname(session: AsyncSession):
 @pytest.mark.asyncio
 async def test_get_user_by_id(session: AsyncSession):
     # Given
-    user_repo_mock = AsyncMock(spec=UserRepo)
     user = make_user(
         id=1,
         password="password",
@@ -115,7 +113,6 @@ async def test_get_user_by_id(session: AsyncSession):
 @pytest.mark.asyncio
 async def test_get_user_by_email_and_password(session: AsyncSession):
     # Given
-    user_repo_mock = AsyncMock(spec=UserRepo)
     user = make_user(
         id=1,
         password="password",
@@ -151,7 +148,6 @@ async def test_get_user_by_email_and_password(session: AsyncSession):
 @pytest.mark.asyncio
 async def test_save(session: AsyncSession):
     # Given
-    user_repo_mock = AsyncMock(spec=UserRepo)
     user = make_user(
         id=1,
         password="password",

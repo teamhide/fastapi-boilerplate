@@ -1,23 +1,27 @@
-from fastapi import FastAPI, Request, Depends
+from fastapi import Depends, FastAPI, Request
 from fastapi.middleware import Middleware
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from app.auth.adapter.input.api import router as auth_router
+from app.container import Container
+from app.user.adapter.input.api import router as user_router
 from core.config import config
 from core.exceptions import CustomException
 from core.fastapi.dependencies import Logging
 from core.fastapi.middlewares import (
-    AuthenticationMiddleware,
     AuthBackend,
-    SQLAlchemyMiddleware,
+    AuthenticationMiddleware,
     ResponseLogMiddleware,
+    SQLAlchemyMiddleware,
 )
-from core.helpers.cache import Cache, RedisBackend, CustomKeyMaker
-from app.user.adapter.input.api import router as user_router
+from core.helpers.cache import Cache, CustomKeyMaker, RedisBackend
 
 
 def init_routers(app_: FastAPI) -> None:
+    container = Container()
+    user_router.container = container
+    auth_router.container = container
     app_.include_router(user_router)
     app_.include_router(auth_router)
 

@@ -34,6 +34,9 @@ types-redis = "^4.6.0.20240106"
 [tool.coverage.run]
 omit=["tests/*", "test_*.py", "migrations/*"]
 
+[tool.isort]
+profile="black"
+
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"

@@ -1,11 +1,10 @@
-from app.user.adapter.output.persistence.sqlalchemy.user import UserSQLAlchemyRepo
 from app.user.domain.entity.user import User, UserRead
 from app.user.domain.repository.user import UserRepo
 
 
 class UserRepositoryAdapter:
-    def __init__(self):
-        self.user_repo: UserRepo = UserSQLAlchemyRepo()
+    def __init__(self, *, user_repo: UserRepo):
+        self.user_repo = user_repo
 
     async def get_users(
         self,

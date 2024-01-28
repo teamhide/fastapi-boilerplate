@@ -1,15 +1,13 @@
+from dependency_injector.wiring import Provide, inject
 from fastapi import APIRouter, Depends, Query
 
-from core.fastapi.dependencies import (
-    PermissionDependency,
-    IsAdmin,
-)
-from app.user.adapter.input.api.v1.request import LoginRequest, CreateUserRequest
+from app.container import Container
+from app.user.adapter.input.api.v1.request import CreateUserRequest, LoginRequest
 from app.user.adapter.input.api.v1.response import LoginResponse
-from app.user.application.dto import CreateUserResponseDTO
-from app.user.application.dto import GetUserListResponseDTO
-from app.user.application.service.user import UserService
+from app.user.application.dto import CreateUserResponseDTO, GetUserListResponseDTO
 from app.user.domain.command import CreateUserCommand
+from app.user.domain.usecase.user import UserUseCase
+from core.fastapi.dependencies import IsAdmin, PermissionDependency
 
 user_router = APIRouter()
 
@@ -19,20 +17,26 @@ user_router = APIRouter()
     response_model=list[GetUserListResponseDTO],
     dependencies=[Depends(PermissionDependency([IsAdmin]))],
 )
+@inject
 async def get_user_list(
     limit: int = Query(10, description="Limit"),
     prev: int = Query(None, description="Prev ID"),
+    usecase: UserUseCase = Depends(Provide[Container.user_service]),
 ):
-    return await UserService().get_user_list(limit=limit, prev=prev)
+    return await usecase.get_user_list(limit=limit, prev=prev)
 
 
 @user_router.post(
     "",
     response_model=CreateUserResponseDTO,
 )
-async def create_user(request: CreateUserRequest):
+@inject
+async def create_user(
+    request: CreateUserRequest,
+    usecase: UserUseCase = Depends(Provide[Container.user_service]),
+):
     command = CreateUserCommand(**request.model_dump())
-    await UserService().create_user(command=command)
+    await usecase.create_user(command=command)
     return {"email": request.email, "nickname": request.nickname}
 
 
@@ -40,6 +44,10 @@ async def create_user(request: CreateUserRequest):
     "/login",
     response_model=LoginResponse,
 )
-async def login(request: LoginRequest):
-    token = await UserService().login(email=request.email, password=request.password)
+@inject
+async def login(
+    request: LoginRequest,
+    usecase: UserUseCase = Depends(Provide[Container.user_service]),
+):
+    token = await usecase.login(email=request.email, password=request.password)
     return {"token": token.token, "refresh_token": token.refresh_token}

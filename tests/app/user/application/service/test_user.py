@@ -4,8 +4,8 @@ import pytest
 
 from app.user.adapter.output.persistence.repository_adapter import UserRepositoryAdapter
 from app.user.application.exception import (
-    PasswordDoesNotMatchException,
     DuplicateEmailOrNicknameException,
+    PasswordDoesNotMatchException,
     UserNotFoundException,
 )
 from app.user.application.service.user import UserService
@@ -14,7 +14,8 @@ from app.user.domain.entity.user import UserRead
 from core.helpers.token import TokenHelper
 from tests.support.user_fixture import make_user
 
-user_service = UserService()
+repository_mock = AsyncMock(spec=UserRepositoryAdapter)
+user_service = UserService(repository=repository_mock)
 
 
 @pytest.mark.asyncio
@@ -22,7 +23,6 @@ async def test_get_user_list():
     # Given
     limit = 10
     prev = 0
-    repository_mock = AsyncMock(spec=UserRepositoryAdapter)
     user = UserRead(id=1, email="h@id.e", nickname="hide")
     repository_mock.get_users.return_value = [user]
     user_service.repository = repository_mock
@@ -67,7 +67,6 @@ async def test_create_user_duplicated():
         lat=37.123,
         lng=127.123,
     )
-    repository_mock = AsyncMock(spec=UserRepositoryAdapter)
     user = make_user(
         password="password",
         email="h@id.e",
@@ -95,7 +94,6 @@ async def test_create_user():
         lat=37.123,
         lng=127.123,
     )
-    repository_mock = AsyncMock(spec=UserRepositoryAdapter)
     repository_mock.get_user_by_email_or_nickname.return_value = None
     user_service.repository = repository_mock
 
@@ -109,7 +107,6 @@ async def test_create_user():
 @pytest.mark.asyncio
 async def test_is_admin_user_not_exist():
     # Given
-    repository_mock = AsyncMock(spec=UserRepositoryAdapter)
     repository_mock.get_user_by_id.return_value = None
     user_service.repository = repository_mock
 
@@ -123,7 +120,6 @@ async def test_is_admin_user_not_exist():
 @pytest.mark.asyncio
 async def test_is_admin_user_is_not_admin():
     # Given
-    repository_mock = AsyncMock(spec=UserRepositoryAdapter)
     user = make_user(
         id=1,
         password="password",
@@ -146,7 +142,6 @@ async def test_is_admin_user_is_not_admin():
 @pytest.mark.asyncio
 async def test_is_admin():
     # Given
-    repository_mock = AsyncMock(spec=UserRepositoryAdapter)
     user = make_user(
         id=1,
         password="password",
@@ -169,7 +164,6 @@ async def test_is_admin():
 @pytest.mark.asyncio
 async def test_login_user_not_exist():
     # Given
-    repository_mock = AsyncMock(spec=UserRepositoryAdapter)
     repository_mock.get_user_by_email_and_password.return_value = None
     user_service.repository = repository_mock
 
@@ -181,7 +175,6 @@ async def test_login_user_not_exist():
 @pytest.mark.asyncio
 async def test_login():
     # Given
-    repository_mock = AsyncMock(spec=UserRepositoryAdapter)
     user = make_user(
         id=1,
         password="password",

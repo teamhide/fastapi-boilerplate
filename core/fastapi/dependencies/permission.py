@@ -1,12 +1,14 @@
 from abc import ABC, abstractmethod
 from typing import Type
 
-from fastapi import Request
+from dependency_injector.wiring import Provide, inject
+from fastapi import Depends, Request
 from fastapi.openapi.models import APIKey, APIKeyIn
 from fastapi.security.base import SecurityBase
 from starlette import status
 
-from app.user.application.service.user import UserService
+from app.container import Container
+from app.user.domain.usecase.user import UserUseCase
 from core.exceptions import CustomException
 
 
@@ -34,12 +36,17 @@ class IsAuthenticated(BasePermission):
 class IsAdmin(BasePermission):
     exception = UnauthorizedException
 
-    async def has_permission(self, request: Request) -> bool:
+    @inject
+    async def has_permission(
+        self,
+        request: Request,
+        usecase: UserUseCase = Depends(Provide[Container.user_service]),
+    ) -> bool:
         user_id = request.user.id
         if not user_id:
             return False
 
-        return await UserService().is_admin(user_id=user_id)
+        return await usecase.is_admin(user_id=user_id)
 
 
 class AllowAll(BasePermission):

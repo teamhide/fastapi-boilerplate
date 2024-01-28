@@ -1,14 +1,12 @@
 from app.user.adapter.output.persistence.repository_adapter import UserRepositoryAdapter
-from app.user.application.dto import (
-    LoginResponseDTO,
-)
+from app.user.application.dto import LoginResponseDTO
 from app.user.application.exception import (
-    PasswordDoesNotMatchException,
     DuplicateEmailOrNicknameException,
+    PasswordDoesNotMatchException,
     UserNotFoundException,
 )
 from app.user.domain.command import CreateUserCommand
-from app.user.domain.entity.user import UserRead, User
+from app.user.domain.entity.user import User, UserRead
 from app.user.domain.usecase.user import UserUseCase
 from app.user.domain.vo.location import Location
 from core.db import Transactional
@@ -16,8 +14,8 @@ from core.helpers.token import TokenHelper
 
 
 class UserService(UserUseCase):
-    def __init__(self):
-        self.repository = UserRepositoryAdapter()
+    def __init__(self, *, repository: UserRepositoryAdapter):
+        self.repository = repository
 
     async def get_user_list(
         self,
