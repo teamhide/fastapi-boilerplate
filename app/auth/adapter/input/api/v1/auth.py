@@ -1,8 +1,13 @@
-from fastapi import APIRouter, Response
+from dependency_injector.wiring import Provide, inject
+from fastapi import APIRouter, Depends, Response
 
-from app.auth.adapter.input.api.v1.request import RefreshTokenRequest, VerifyTokenRequest
+from app.auth.adapter.input.api.v1.request import (
+    RefreshTokenRequest,
+    VerifyTokenRequest,
+)
 from app.auth.adapter.input.api.v1.response import RefreshTokenResponse
-from app.auth.application.service.jwt import JwtService
+from app.auth.domain.usecase.jwt import JwtUseCase
+from app.container import Container
 
 auth_router = APIRouter()
 
@@ -11,14 +16,22 @@ auth_router = APIRouter()
     "/refresh",
     response_model=RefreshTokenResponse,
 )
-async def refresh_token(request: RefreshTokenRequest):
-    token = await JwtService().create_refresh_token(
+@inject
+async def refresh_token(
+    request: RefreshTokenRequest,
+    usecase: JwtUseCase = Depends(Provide[Container.jwt_service]),
+):
+    token = await usecase.create_refresh_token(
         token=request.token, refresh_token=request.refresh_token
     )
     return {"token": token.token, "refresh_token": token.refresh_token}
 
 
 @auth_router.post("/verify")
-async def verify_token(request: VerifyTokenRequest):
-    await JwtService().verify_token(token=request.token)
+@inject
+async def verify_token(
+    request: VerifyTokenRequest,
+    usecase: JwtUseCase = Depends(Provide[Container.jwt_service]),
+):
+    await usecase.verify_token(token=request.token)
     return Response(status_code=200)
