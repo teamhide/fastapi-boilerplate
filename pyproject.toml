@@ -5,7 +5,7 @@ description = "FastAPI Boilerplate"
 authors = ["Hide <padocon@naver.com>"]
 
 [tool.poetry.dependencies]
-python = "3.11.7"
+python = "^3.11"
 alembic = "^1.13.1"
 uvicorn = "^0.25.0"
 fastapi = "^0.109.0"
