@@ -61,6 +61,27 @@ async def create_user(self):
 
 Do not use explicit `commit()`. `Transactional` class automatically do.
 
+### Query with asyncio.gather()
+When executing queries concurrently through `asyncio.gather()`, you must use the `session_factory` context manager rather than the globally used session.
+
+```python
+from core.db import session_factory
+
+
+async def get_by_id(self, *, user_id) -> User:
+    stmt = select(User)
+    async with session_factory() as read_session:
+        return await read_session.execute(query).scalars().first()
+
+
+async def main() -> None:
+    user_1, user_2 = await asyncio.gather(
+        get_by_id(user_id=1),
+        get_by_id(user_id=2),
+    )
+```
+If you do not use a database connection like `session.add()`, it is recommended to use a globally provided session.
+
 ### Multiple databases
 
 Go to `core/config.py` and edit `WRITER_DB_URL` and `READER_DB_URL` in the config class.
