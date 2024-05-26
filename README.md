@@ -245,3 +245,65 @@ from core.helpers.cache import Cache, CacheTag
 await Cache.remove_by_prefix(prefix="get_user_list")
 await Cache.remove_by_tag(tag=CacheTag.GET_USER_LIST)
 ```
+
+## Celery Integration
+
+This project utilizes Celery for background task processing to enhance performance and scalability, particularly for operations that are IO-bound or computationally intensive. The integration is carefully designed to support both synchronous and asynchronous tasks, with a focus on maintaining consistency in database session management between FastAPI and Celery.
+
+### Configuration
+
+The `CeleryConfigurator` class centralizes the Celery setup, including configuration of task routes, worker settings, and database session management. This class ensures that Celery is seamlessly integrated with the existing FastAPI application structure, especially concerning how database sessions are handled.
+
+#### Dynamic Queue Creation
+
+Each application within the project can have its tasks routed to a specific queue that is automatically created and named based on the application's module name. This setup allows for fine-grained control over task processing and resource allocation, ensuring that tasks do not interfere with one another and can be scaled independently.
+
+### Examples of Celery Tasks
+
+#### Synchronous Task Example
+
+Here's how a synchronous task is defined and used:
+
+```python
+# app/users/application/celery/tasks.py
+from core.celery import celery_app
+
+@celery_app.task(name="send_welcome_email")
+def send_welcome_email(user_id):
+    """
+    Sends a welcome email to the user specified by user_id.
+    """
+    print(f"Sending welcome email to user {user_id}")
+    # Email sending logic here
+    return f"Welcome email sent to user {user_id}"
+
+# To dispatch this task from your application code, use:
+send_welcome_email.delay(user_id=123)
+
+```
+
+#### Asynchronous Task Example
+
+Asynchronous tasks are beneficial for operations that involve I/O waiting times, such as database operations or requests to external services. Here's how to define an asynchronous task using the `async_task` decorator:
+
+```python
+# app/users/application/celery/tasks.py
+from core.celery import async_task
+
+@async_task(name="log_user_activity")
+async def log_user_activity(user_id, activity):
+    """
+    Asynchronously logs user activity.
+    """
+    await asyncio.sleep(2)  # Simulate async I/O operation
+    print(f"Activity logged for user {user_id}: {activity}")
+    return f"Activity logged for user {user_id}: {activity}"
+```
+
+#### Running Celery Workers
+
+To start the Celery workers, use the following command, which ensures they are configured as per the settings defined in CeleryConfigurator:
+
+```bash
+celery -A core.celery.celery_app worker --loglevel=info -P prefork -E
+```
