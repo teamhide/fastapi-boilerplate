@@ -50,10 +50,7 @@ class UserService(UserUseCase):
         if not user:
             return False
 
-        if user.is_admin is False:
-            return False
-
-        return True
+        return user.is_admin
 
     async def login(self, *, email: str, password: str) -> LoginResponseDTO:
         user = await self.repository.get_user_by_email_and_password(
