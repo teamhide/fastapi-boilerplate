@@ -28,7 +28,7 @@ dependency-injector = "^4.41.0"
 httpx = "^0.26.0"
 
 [tool.poetry.group.dev.dependencies]
-pytest = "^7.4.4"
+pytest = "^9.0.3"
 types-redis = "^4.6.0.20240106"
 
 [tool.coverage.run]
